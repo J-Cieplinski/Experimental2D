@@ -6,9 +6,9 @@
 
 using json = nlohmann::json;
 
-
 void Game::initStates() {
-    m_states.push(std::move(std::make_unique<GameState>(m_window)));
+    m_states[States::GAME] = std::make_unique<GameState>(m_window, this);
+    m_currentState = m_states[States::GAME].get();
 }
 
 void Game::initWindow() {
@@ -38,20 +38,49 @@ Game::Game() {
 }
 
 Game::~Game() {
-    while(!m_states.empty()) {
-        m_states.pop();
+    m_states.clear();
+}
+
+void Game::changeState(States stateId, std::unique_ptr<State> state) {
+    // cleanup the current state
+	if (!m_states.empty()) {
+        m_currentState->cleanup();
+        auto it = std::find_if(m_states.begin(), m_states.end(), [&](const auto& el) {
+            return el.second.get() == m_currentState;
+        });
+        m_states.erase(it);
+        m_currentState = nullptr;
+	}
+
+    if(!m_states[stateId]) {
+        m_states[stateId] = std::move(state);
     }
+
+    m_currentState = m_states[stateId].get();
+    m_currentState->unpause();
+}
+
+void Game::pushState(States stateId, std::unique_ptr<State> state) {
+    // pause current state
+	if (m_currentState) {
+		m_currentState->pause();
+	}
+
+	// store and init the new state
+    if(!m_states[stateId]) {
+        m_states[stateId] = std::move(state);
+    }
+
+    m_currentState = m_states[stateId].get();
+    m_currentState->unpause();
 }
 
 void Game::update() {
     updateEvents();
-    if(!m_states.empty()) {
-        auto currentState = m_states.top().get();
-        currentState->update(m_dt);
-
-        if(currentState->isQuitting()) {
-            currentState->exitState();
-            m_states.pop();
+    if(m_currentState) {
+        m_currentState->update(m_dt);
+        if(m_currentState->isQuitting()) {
+            m_window->close();
         }
     }
 }
@@ -72,8 +101,8 @@ void Game::updateDt() {
 void Game::render() {
     m_window->clear();
 
-    if(!m_states.empty()) {
-        m_states.top()->render();
+    if(m_currentState) {
+        m_currentState->render();
     }
 
     m_window->display();

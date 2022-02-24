@@ -4,7 +4,7 @@
         "height": 600,
         "title": "Some 2D thing",
         "VSync": {
-            "enabled": true,
+            "enabled": false,
             "FPScap": 144
         }
     }

@@ -8,5 +8,5 @@ set(SFML_STATIC_LIBRARIES TRUE)
 file(GLOB Json dependencies/nlohmann/*)
 find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
 
-add_executable(Experimental2D src/main.cpp src/Game.cpp src/states/State.cpp src/states/GameState.cpp)
+add_executable(Experimental2D src/main.cpp src/Game.cpp src/states/State.cpp src/states/GameState.cpp src/states/PausedState.cpp)
 target_link_libraries(Experimental2D sfml-graphics)
