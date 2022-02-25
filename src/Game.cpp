@@ -6,9 +6,9 @@
 
 using json = nlohmann::json;
 
-
 void Game::initStates() {
-    m_states.push(std::move(std::make_unique<GameState>(m_window)));
+    states_[States::GAME] = std::make_unique<GameState>(window_, this);
+    currentState_ = states_[States::GAME].get();
 }
 
 void Game::initWindow() {
@@ -17,15 +17,15 @@ void Game::initWindow() {
     configFile.close();
     auto windowConfig = config["window"];
 
-    m_window = std::make_unique<sf::RenderWindow>(sf::VideoMode(windowConfig["width"], windowConfig["height"]), windowConfig["title"]);
+    window_ = std::make_unique<sf::RenderWindow>(sf::VideoMode(windowConfig["width"], windowConfig["height"]), windowConfig["title"]);
     if(windowConfig["VSync"]["enabled"]) {
-        m_window->setVerticalSyncEnabled(true);
-        m_window->setFramerateLimit(windowConfig["VSync"]["FPScap"]);
+        window_->setVerticalSyncEnabled(true);
+        window_->setFramerateLimit(windowConfig["VSync"]["FPScap"]);
     }
 }
 
 void Game::run() {
-    while(m_window->isOpen()) {
+    while(window_->isOpen()) {
         updateDt();
         update();
         render();
@@ -38,43 +38,75 @@ Game::Game() {
 }
 
 Game::~Game() {
-    while(!m_states.empty()) {
-        m_states.pop();
+    states_.clear();
+}
+
+void Game::changeState(States stateId, std::unique_ptr<State> state) {
+    // cleanup the current state
+	if (!states_.empty()) {
+        currentState_->cleanup();
+        auto it = std::find_if(states_.begin(), states_.end(), [&](const auto& el) {
+            return el.second.get() == currentState_;
+        });
+        states_.erase(it);
+        currentState_ = nullptr;
+	}
+
+    // store the new state if not existing
+    if(!states_[stateId]) {
+        states_[stateId] = std::move(state);
     }
+
+    // unpause the new state
+    currentState_ = states_[stateId].get();
+    currentState_->unpause();
+}
+
+void Game::pushState(States stateId, std::unique_ptr<State> state) {
+    // pause current state
+	if (currentState_) {
+		currentState_->pause();
+	}
+
+	// store the new state if not existing
+    if(!states_[stateId]) {
+        states_[stateId] = std::move(state);
+    }
+
+    // set current state and unpause
+    currentState_ = states_[stateId].get();
+    currentState_->unpause();
 }
 
 void Game::update() {
     updateEvents();
-    if(!m_states.empty()) {
-        auto currentState = m_states.top().get();
-        currentState->update(m_dt);
-
-        if(currentState->isQuitting()) {
-            currentState->exitState();
-            m_states.pop();
+    if(currentState_) {
+        currentState_->update(dt_);
+        if(currentState_->isQuitting()) {
+            window_->close();
         }
     }
 }
 
 void Game::updateEvents() {
-    while (m_window->pollEvent(m_event))
+    while (window_->pollEvent(event_))
     {
-        if(m_event.type == sf::Event::Closed) {
-            m_window->close();
+        if(event_.type == sf::Event::Closed) {
+            window_->close();
         }
     }
 }
 
 void Game::updateDt() {
-    m_dt = m_dtClock.restart().asSeconds();
+    dt_ = dtClock_.restart().asSeconds();
 }
 
 void Game::render() {
-    m_window->clear();
+    window_->clear();
 
-    if(!m_states.empty()) {
-        m_states.top()->render();
+    if(currentState_) {
+        currentState_->render();
     }
 
-    m_window->display();
+    window_->display();
 }
