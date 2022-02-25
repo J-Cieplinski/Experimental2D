@@ -3,8 +3,7 @@
 #include "../Game.hpp"
 
 PausedState::PausedState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
-    : State(targetWindow, game) {
-
+    : State(targetWindow, game, "configs/testKeybinds.json") {
 }
 
 void PausedState::updateFromInput(const float dt) {
@@ -12,7 +11,7 @@ void PausedState::updateFromInput(const float dt) {
     if(!targetWindow_) {
         return;
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+    if(sf::Keyboard::isKeyPressed(keybinds_["BACK"])) {
         game_->changeState(States::GAME);
     }
 }

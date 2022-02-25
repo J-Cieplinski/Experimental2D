@@ -12,7 +12,9 @@ void Game::initStates() {
 }
 
 void Game::initWindow() {
-    std::ifstream configFile("configs\\window.json");
+    std::ifstream configFile("configs/window.json");
+    assert(configFile.is_open());
+
     auto config = json::parse(configFile);
     configFile.close();
     auto windowConfig = config["window"];

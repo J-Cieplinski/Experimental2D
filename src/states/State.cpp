@@ -1,7 +1,23 @@
 #include "State.hpp"
+#include "../../dependencies/nlohmann/json.hpp"
+#include <fstream>
 
-State::State(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game) : targetWindow_(targetWindow), game_(game) {
+using json = nlohmann::json;
 
+void State::initKeybinds(const char* configFile) {
+    std::ifstream keybindsConfig(configFile);
+    assert(keybindsConfig.is_open());
+
+    auto keybinds = json::parse(keybindsConfig);
+    keybindsConfig.close();
+
+    for(auto& keybind : keybinds.items()) {
+        keybinds_[keybind.key()] = static_cast<sf::Keyboard::Key>(keybind.value());
+    }
+}
+
+State::State(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game, const char* keybindsConfig) : targetWindow_(targetWindow), game_(game) {
+    initKeybinds(keybindsConfig);
 }
 
 State::~State() {
@@ -9,7 +25,7 @@ State::~State() {
 }
 
 void State::checkForGameQuit() {
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+    if(sf::Keyboard::isKeyPressed(keybinds_["QUIT"])) {
         quit_ = true;
     }
 }
