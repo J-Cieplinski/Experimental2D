@@ -1,10 +1,12 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.16)
 project(Experimental2D CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(SFML_DIR "C:\\SFML-2.5.1\\lib\\cmake\\SFML")
-set(SFML_STATIC_LIBRARIES TRUE)
+IF (WIN32)
+    set(SFML_DIR "C:\\SFML-2.5.1\\lib\\cmake\\SFML")
+    set(SFML_STATIC_LIBRARIES TRUE)
+ENDIF()
 
 file(GLOB Json dependencies/nlohmann/*)
 find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
