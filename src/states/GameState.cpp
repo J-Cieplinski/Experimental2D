@@ -1,4 +1,3 @@
-
 #include "GameState.hpp"
 #include "../Game.hpp"
 #include "PausedState.hpp"

@@ -1,5 +1,5 @@
 #include "Game.hpp"
-#include "states/GameState.hpp"
+#include "states/MainMenuState.hpp"
 #include "../dependencies/nlohmann/json.hpp"
 #include <fstream>
 #include <iostream>
@@ -7,8 +7,8 @@
 using json = nlohmann::json;
 
 void Game::initStates() {
-    states_[States::GAME] = std::make_unique<GameState>(window_, this);
-    currentState_ = states_[States::GAME].get();
+    states_[States::MENU] = std::make_unique<MainMenuState>(window_, this);
+    currentState_ = states_[States::MENU].get();
 }
 
 void Game::initWindow() {
