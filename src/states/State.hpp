@@ -6,17 +6,17 @@
 class Game;
 class State {
     protected:
-        std::shared_ptr<sf::RenderWindow> m_targetWindow;
-        Game* m_game;
+        std::shared_ptr<sf::RenderWindow> targetWindow_;
+        Game* game_;
         std::vector<sf::Texture> m_textures;
-        bool m_quit = false;
-        bool m_paused = false;
+        bool quit_ = false;
+        bool paused_ = false;
 
     public:
         State(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game);
         virtual ~State();
 
-        void checkForExit();
+        void checkForGameQuit();
         bool isQuitting() const;
         bool isPaused() const;
         void unpause();

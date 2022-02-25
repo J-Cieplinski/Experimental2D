@@ -1,31 +1,31 @@
 #include "State.hpp"
 
-State::State(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game) : m_targetWindow(targetWindow), m_game(game) {
+State::State(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game) : targetWindow_(targetWindow), game_(game) {
 
 }
 
 State::~State() {
-    m_targetWindow.reset();
+    targetWindow_.reset();
 }
 
-void State::checkForExit() {
+void State::checkForGameQuit() {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-        m_quit = true;
+        quit_ = true;
     }
 }
 
 bool State::isQuitting() const {
-    return m_quit;
+    return quit_;
 }
 
 bool State::isPaused() const {
-    return m_paused;
+    return paused_;
 }
 
 void State::unpause() {
-    m_paused = false;
+    paused_ = false;
 }
 
 void State::pause() {
-    m_paused = true;
+    paused_ = true;
 }

@@ -16,13 +16,13 @@ class Game {
         void changeState(States stateId, std::unique_ptr<State> state = nullptr);
         void pushState(States stateId, std::unique_ptr<State> state = nullptr);
     private:
-        std::shared_ptr<sf::RenderWindow> m_window;
-        sf::Event m_event;
-        sf::Clock m_dtClock;
-        float m_dt;
+        std::shared_ptr<sf::RenderWindow> window_;
+        sf::Event event_;
+        sf::Clock dtClock_;
+        float dt_;
 
-        std::map<States, std::unique_ptr<State>> m_states;
-        State* m_currentState;
+        std::map<States, std::unique_ptr<State>> states_;
+        State* currentState_;
 
         void update();
         void updateEvents();

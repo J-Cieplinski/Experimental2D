@@ -8,24 +8,24 @@ GameState::GameState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
 }
 
 void GameState::updateFromInput(const float dt) {
-    checkForExit();
+    checkForGameQuit();
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-        m_game->pushState(States::PAUSED, std::make_unique<PausedState>(m_targetWindow, m_game));
+        game_->pushState(States::PAUSED, std::make_unique<PausedState>(targetWindow_, game_));
     }
 }
 
 void GameState::update(const float dt) {
-    if(m_paused || m_quit) {
+    if(paused_ || quit_) {
         return;
     }
     updateFromInput(dt);
 }
 
 void GameState::render(sf::RenderTarget* target) {
-    target = target ? target : m_targetWindow.get();
+    target = target ? target : targetWindow_.get();
     target->clear(sf::Color::Red);
 }
 
 void GameState::cleanup() {
-    m_game = nullptr;
+    game_ = nullptr;
 }
