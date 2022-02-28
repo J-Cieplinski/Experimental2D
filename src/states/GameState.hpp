@@ -1,5 +1,5 @@
 #include "State.hpp"
-
+#include "../entities/Entity.hpp"
 class GameState : public State {
     public:
         GameState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game);
@@ -8,4 +8,6 @@ class GameState : public State {
         void update(const float dt) override;
         void render(sf::RenderTarget* target = nullptr) override;
         void cleanup() override;
+    private:
+        Entity player_;
 };
