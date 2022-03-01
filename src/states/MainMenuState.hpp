@@ -8,4 +8,7 @@ class MainMenuState : public State {
         void update(const float dt) override;
         void render(sf::RenderTarget* target = nullptr) override;
         void cleanup() override;
+
+        private:
+        Button testButton_;
 };

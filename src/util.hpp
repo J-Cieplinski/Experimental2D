@@ -7,6 +7,10 @@ enum class States {
     MENU = 3
 };
 
+enum class Event {
+    MOUSE_CLICK = 1
+};
+
 // Linear interpolation function. Works for vectors
 template <typename T, typename U>
 T lerp(T start, T end, U t) {

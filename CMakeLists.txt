@@ -12,5 +12,6 @@ file(GLOB Json dependencies/nlohmann/*)
 find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
 
 add_executable(Experimental2D src/main.cpp src/entities/Entity.cpp src/Game.cpp src/states/State.cpp src/states/GameState.cpp src/states/PausedState.cpp src/states/MainMenuState.cpp
-                            src/components/EntityControlComponent.cpp src/components/PhysicsComponent.cpp src/components/GraphicsComponent.cpp src/components/PlayerControlComponent.cpp)
+                            src/components/EntityControlComponent.cpp src/components/PhysicsComponent.cpp src/components/GraphicsComponent.cpp src/components/PlayerControlComponent.cpp
+                            src/gui/Button.cpp)
 target_link_libraries(Experimental2D sfml-graphics)

@@ -45,3 +45,18 @@ void State::unpause() {
 void State::pause() {
     paused_ = true;
 }
+
+void State::updateMousePos() {
+    mouseScreenPos_ = sf::Mouse::getPosition();
+    mouseWindowPos_ = sf::Mouse::getPosition(*targetWindow_);
+    mouseViewPos_ = targetWindow_->mapPixelToCoords(mouseWindowPos_);
+}
+
+void State::addObserver(Button* button) {
+    observers_.emplace(button);
+}
+
+void State::removeObserver(Button* button) {
+    observers_.erase(button);
+}
+
