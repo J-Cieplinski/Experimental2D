@@ -10,5 +10,6 @@ class MainMenuState : public State {
         void cleanup() override;
 
         private:
-        Button testButton_;
+        std::unique_ptr<gui::Button> testButton_;
+        std::unique_ptr<sf::Font> font_;
 };

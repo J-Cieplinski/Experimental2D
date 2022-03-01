@@ -15,9 +15,10 @@ class Game {
 
         void changeState(States stateId, std::unique_ptr<State> state = nullptr);
         void pushState(States stateId, std::unique_ptr<State> state = nullptr);
+
+        sf::Event event_;
     private:
         std::shared_ptr<sf::RenderWindow> window_;
-        sf::Event event_;
         sf::Clock dtClock_;
         float dt_;
 

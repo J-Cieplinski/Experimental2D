@@ -15,7 +15,7 @@ class State {
         sf::Vector2i mouseWindowPos_;
         sf::Vector2i mouseScreenPos_;
         sf::Vector2f mouseViewPos_;
-        std::set<Button*> observers_;
+        std::set<gui::Button*> observers_;
 
         bool quit_ = false;
         bool paused_ = false;
@@ -31,8 +31,8 @@ class State {
         void unpause();
         void pause();
         void updateMousePos();
-        void addObserver(Button* button);
-        void removeObserver(Button* button);
+        void addObserver(gui::Button* button);
+        void removeObserver(gui::Button* button);
 
         virtual void updateFromInput(const float dt) = 0;
         virtual void update(const float dt) = 0;

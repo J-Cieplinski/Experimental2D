@@ -52,11 +52,11 @@ void State::updateMousePos() {
     mouseViewPos_ = targetWindow_->mapPixelToCoords(mouseWindowPos_);
 }
 
-void State::addObserver(Button* button) {
+void State::addObserver(gui::Button* button) {
     observers_.emplace(button);
 }
 
-void State::removeObserver(Button* button) {
+void State::removeObserver(gui::Button* button) {
     observers_.erase(button);
 }
 
