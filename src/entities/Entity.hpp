@@ -1,9 +1,8 @@
 #pragma once
 #include "SFML/Graphics.hpp"
-
-class EntityControlComponent;
-class PhysicsComponent;
-class GraphicsComponent;
+#include "../components/EntityControlComponent.hpp"
+#include "../components/GraphicsComponent.hpp"
+#include "../components/PhysicsComponent.hpp"
 
 class Entity {
     public:

@@ -1,5 +1,8 @@
 #pragma once
-#include "../entities/Entity.hpp"
+
+#include <map>
+#include <string>
+#include "SFML/Graphics.hpp"
 #include "EntityControlComponent.hpp"
 
 class PlayerControlComponent : public EntityControlComponent {

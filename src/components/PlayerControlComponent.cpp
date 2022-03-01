@@ -1,4 +1,6 @@
 #include "PlayerControlComponent.hpp"
+#include "../entities/Entity.hpp"
+
 
 PlayerControlComponent::PlayerControlComponent(const std::map<std::string, sf::Keyboard::Key>& keybinds)
     : keybinds_(keybinds)
