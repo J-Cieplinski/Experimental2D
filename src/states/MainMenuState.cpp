@@ -1,4 +1,5 @@
 #include <memory>
+#include <cassert>
 #include "MainMenuState.hpp"
 #include "GameState.hpp"
 #include "../Game.hpp"
@@ -8,7 +9,7 @@ MainMenuState::MainMenuState(std::shared_ptr<sf::RenderWindow> targetWindow, Gam
     : State(targetWindow, game) {
 
         font_ = std::make_unique<sf::Font>();
-        _ASSERT(font_->loadFromFile("assets/fonts/LeagueGothic.ttf"));
+        assert(font_->loadFromFile("assets/fonts/LeagueGothic.ttf"));
         testButton_ = std::make_unique<gui::Button>(sf::Vector2f(100.f, 50.f), sf::Vector2f(100.f, 100.f), "Test Button", font_.get(), 25);
         addObserver(testButton_.get());
 }
