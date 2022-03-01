@@ -1,9 +1,9 @@
 #include "Entity.hpp"
-#include "../components/InputComponent.hpp"
+#include "../components/EntityControlComponent.hpp"
 #include "../components/GraphicsComponent.hpp"
 #include "../components/PhysicsComponent.hpp"
 
-Entity::Entity(InputComponent* input, PhysicsComponent* physics, GraphicsComponent* graphics)
+Entity::Entity(EntityControlComponent* input, PhysicsComponent* physics, GraphicsComponent* graphics)
     : input_(input),
       physics_(physics),
       graphics_(graphics)
@@ -11,7 +11,7 @@ Entity::Entity(InputComponent* input, PhysicsComponent* physics, GraphicsCompone
 
 }
 
-void Entity::update(const float dt) {
+void Entity::update(float dt) {
     input_->update(*this);
     physics_->update(dt, *this);
     graphics_->update(*this);

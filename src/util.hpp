@@ -7,6 +7,7 @@ enum class States {
     MENU = 3
 };
 
+// Linear interpolation function. Works for vectors
 template <typename T, typename U>
 T lerp(T start, T end, U t) {
     return static_cast<T>(start * t + end * (1 - t));

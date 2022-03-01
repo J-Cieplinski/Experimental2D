@@ -1,12 +1,12 @@
 #include "GameState.hpp"
 #include "PausedState.hpp"
 #include "../Game.hpp"
-#include "../components/InputComponent.hpp"
+#include "../components/PlayerControlComponent.hpp"
 #include "../components/GraphicsComponent.hpp"
 #include "../components/PhysicsComponent.hpp"
 
 GameState::GameState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
-    : State(targetWindow, game), player_(new InputComponent(keybinds_), new PhysicsComponent(), new GraphicsComponent())
+    : State(targetWindow, game), player_(new PlayerControlComponent(keybinds_), new PhysicsComponent(), new GraphicsComponent())
 {
 
 }

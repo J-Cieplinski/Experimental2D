@@ -1,9 +1,12 @@
-#include "InputComponent.hpp"
-InputComponent::InputComponent(const std::map<std::string, sf::Keyboard::Key>& keybinds)
-    : keybinds_(keybinds) {
+#include "PlayerControlComponent.hpp"
+
+PlayerControlComponent::PlayerControlComponent(const std::map<std::string, sf::Keyboard::Key>& keybinds)
+    : keybinds_(keybinds)
+{
+
 }
 
-void InputComponent::update(Entity& target) {
+void PlayerControlComponent::update(Entity& target) {
     target.direction_ = {0, 0};
 
     if (sf::Keyboard::isKeyPressed(keybinds_["UP"])) {
