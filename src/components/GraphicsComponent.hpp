@@ -1,7 +1,7 @@
 #pragma once
 #include "SFML/Graphics.hpp"
-#include "../entities/Entity.hpp"
 
+class Entity;
 class GraphicsComponent {
     public:
         GraphicsComponent();

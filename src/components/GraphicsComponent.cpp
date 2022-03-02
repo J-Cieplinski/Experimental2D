@@ -1,4 +1,5 @@
 #include "GraphicsComponent.hpp"
+#include "../entities/Entity.hpp"
 
 GraphicsComponent::GraphicsComponent() {
     shape_.setSize({10, 10});

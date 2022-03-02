@@ -1,6 +1,6 @@
 #pragma once
-#include "../entities/Entity.hpp"
 
+class Entity;
 class EntityControlComponent {
     public:
         virtual void update(Entity& target);

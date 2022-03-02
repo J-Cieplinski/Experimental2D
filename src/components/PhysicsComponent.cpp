@@ -1,4 +1,5 @@
 #include "PhysicsComponent.hpp"
+#include "../entities/Entity.hpp"
 #include "../util.hpp"
 
 void PhysicsComponent::update(float dt, Entity& target) {

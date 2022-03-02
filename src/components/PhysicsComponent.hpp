@@ -1,6 +1,7 @@
 #pragma once
-#include "../entities/Entity.hpp"
+#include "SFML/Graphics.hpp"
 
+class Entity;
 class PhysicsComponent {
     public:
         void update(float dt, Entity& target);

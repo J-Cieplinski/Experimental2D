@@ -1,7 +1,4 @@
 #include "Entity.hpp"
-#include "../components/EntityControlComponent.hpp"
-#include "../components/GraphicsComponent.hpp"
-#include "../components/PhysicsComponent.hpp"
 
 Entity::Entity(EntityControlComponent* input, PhysicsComponent* physics, GraphicsComponent* graphics)
     : input_(input),
