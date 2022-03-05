@@ -1,5 +1,5 @@
 #include "GameState.hpp"
-#include "PausedState.hpp"
+#include "MainMenuState.hpp"
 #include "../Game.hpp"
 #include "../components/PlayerControlComponent.hpp"
 #include "../components/GraphicsComponent.hpp"
@@ -14,7 +14,7 @@ GameState::GameState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
 void GameState::updateFromInput(const float dt) {
     checkForGameQuit();
     if(sf::Keyboard::isKeyPressed(keybinds_["BACK"])) {
-        game_->pushState(States::PAUSED, std::make_unique<PausedState>(targetWindow_, game_));
+        game_->pushState(States::PAUSED, std::make_unique<MainMenuState>(targetWindow_, game_));
     }
 }
 

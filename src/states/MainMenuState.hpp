@@ -10,6 +10,8 @@ class MainMenuState : public State {
         void cleanup() override;
 
         private:
-        std::unique_ptr<gui::Button> testButton_;
+        std::vector<gui::Button> buttons_;
         std::unique_ptr<sf::Font> font_;
+
+        void initButtons();
 };

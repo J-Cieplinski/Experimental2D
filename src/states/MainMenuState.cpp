@@ -5,22 +5,46 @@
 #include "../Game.hpp"
 #include "../util.hpp"
 
+void MainMenuState::initButtons() {
+    auto startFun = [&]() {
+        game_->pushState(States::GAME, std::make_unique<GameState>(targetWindow_, game_));
+    };
+    auto settingsFun = [&]() {
+
+    };
+    auto exitFun = [&]() {
+        quit_ = true;
+    };
+
+    auto halfWindow = sf::Vector2f(targetWindow_->getSize() / 2u);
+    auto size = sf::Vector2f(150.f, 50.f);
+
+    buttons_.push_back({size, halfWindow + sf::Vector2f(-size.x / 2, -size.y), "Start", font_.get(), 25, startFun});
+    buttons_.push_back({size, halfWindow + sf::Vector2f(-size.x / 2, 0), "Settings", font_.get(), 25, settingsFun});
+    buttons_.push_back({size, halfWindow + sf::Vector2f(-size.x / 2, + size.y), "Exit", font_.get(), 25, exitFun});
+
+    for(auto& button : buttons_) {
+        addObserver(&button);
+    }
+}
+
 MainMenuState::MainMenuState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
     : State(targetWindow, game) {
-
         font_ = std::make_unique<sf::Font>();
         assert(font_->loadFromFile("assets/fonts/LeagueGothic.ttf"));
-        auto fun = [&]() {
-            game_->pushState(States::GAME, std::make_unique<GameState>(targetWindow_, game_));
-        };
-        testButton_ = std::make_unique<gui::Button>(sf::Vector2f(100.f, 50.f), sf::Vector2f(100.f, 100.f), "Test Button", font_.get(), 25, fun);
-        addObserver(testButton_.get());
+
+        initButtons();
 }
 
 void MainMenuState::updateFromInput(const float dt) {
     checkForGameQuit();
-    if(sf::Keyboard::isKeyPressed(keybinds_["CONFIRM"])) {
-        game_->pushState(States::GAME, std::make_unique<GameState>(targetWindow_, game_));
+
+    if(game_->event_.type == sf::Event::MouseMoved) {
+        updateMousePos();
+
+        for(auto& button : buttons_) {
+            button.update(mouseWindowPos_);
+        }
     }
 
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
@@ -35,18 +59,15 @@ void MainMenuState::update(const float dt) {
         return;
     }
 
-    if(game_->event_.type == sf::Event::MouseMoved) {
-        updateMousePos();
-        testButton_->update(mouseWindowPos_);
-    }
-
     updateFromInput(dt);
 }
 
 void MainMenuState::render(sf::RenderTarget* target) {
     target = target ? target : targetWindow_.get();
-    target->clear(sf::Color::Cyan);
-    testButton_->render(*target);
+    target->clear(sf::Color::Black);
+    for(auto& button : buttons_) {
+        button.render(*target);
+    }
 }
 
 void MainMenuState::cleanup() {
