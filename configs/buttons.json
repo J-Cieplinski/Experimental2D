@@ -1,0 +1,43 @@
+{
+    "mainMenu": {
+        "charSize": 25,
+        "buttons": [
+            {
+                "name": "Start",
+                "width": 150,
+                "height": 50,
+                "centerOffset": {
+                    "x": -75,
+                    "y": -50
+                }
+            },
+            {
+                "name": "Settings",
+                "width": 150,
+                "height": 50,
+                "centerOffset": {
+                    "x": -75,
+                    "y": 0
+                }
+            },
+            {
+                "name": "Editor",
+                "width": 150,
+                "height": 50,
+                "centerOffset": {
+                    "x": -75,
+                    "y": 50
+                }
+            },
+            {
+                "name": "Exit",
+                "width": 150,
+                "height": 50,
+                "centerOffset": {
+                    "x": -75,
+                    "y": 100
+                }
+            }
+        ]
+    }
+}

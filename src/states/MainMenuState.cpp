@@ -1,27 +1,45 @@
 #include <memory>
 #include <cassert>
+#include <fstream>
+#include "../../dependencies/nlohmann/json.hpp"
 #include "MainMenuState.hpp"
 #include "GameState.hpp"
 #include "../Game.hpp"
 #include "../util.hpp"
 
-void MainMenuState::initButtons() {
-    auto startFun = [&]() {
-        game_->pushState(States::GAME, std::make_unique<GameState>(targetWindow_, game_));
-    };
-    auto settingsFun = [&]() {
+using json = nlohmann::json;
 
-    };
-    auto exitFun = [&]() {
-        quit_ = true;
-    };
+void MainMenuState::initButtons() {
+    std::map<std::string, std::function<void()>> mainMenuFunc;
+    mainMenuFunc["Start"] = [&]() { game_->pushState(States::GAME, std::make_unique<GameState>(targetWindow_, game_)); };
+    mainMenuFunc["Settings"] = [&]() {  };
+    mainMenuFunc["Exit"] = [&]() { quit_ = true; };
+    mainMenuFunc["Editor"] = [&]() {  };
+
 
     auto halfWindow = sf::Vector2f(targetWindow_->getSize() / 2u);
-    auto size = sf::Vector2f(150.f, 50.f);
 
-    buttons_.push_back({size, halfWindow + sf::Vector2f(-size.x / 2, -size.y), "Start", font_.get(), 25, startFun});
-    buttons_.push_back({size, halfWindow + sf::Vector2f(-size.x / 2, 0), "Settings", font_.get(), 25, settingsFun});
-    buttons_.push_back({size, halfWindow + sf::Vector2f(-size.x / 2, + size.y), "Exit", font_.get(), 25, exitFun});
+    std::ifstream buttonsConfigFile("configs/buttons.json");
+    assert(buttonsConfigFile.is_open());
+
+    auto buttonsConfig = json::parse(buttonsConfigFile);
+    auto mainMenu = buttonsConfig["mainMenu"];
+
+    for(auto& button : mainMenu["buttons"]) {
+        auto size = sf::Vector2f(button["width"], button["height"]);
+        auto offset = button["centerOffset"];
+        std::string name = button["name"];
+
+        uint8_t charSize {0};
+
+        try {
+            charSize = button.at("charSize");
+        } catch(const json::out_of_range& e) {
+            charSize = mainMenu["charSize"];
+        }
+
+        buttons_.push_back({size, halfWindow + sf::Vector2f(offset["x"], offset["y"]), name, font_.get(), charSize, mainMenuFunc.at(name)});
+    }
 
     for(auto& button : buttons_) {
         addObserver(&button);
