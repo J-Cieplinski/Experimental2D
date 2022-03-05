@@ -10,7 +10,10 @@ MainMenuState::MainMenuState(std::shared_ptr<sf::RenderWindow> targetWindow, Gam
 
         font_ = std::make_unique<sf::Font>();
         assert(font_->loadFromFile("assets/fonts/LeagueGothic.ttf"));
-        testButton_ = std::make_unique<gui::Button>(sf::Vector2f(100.f, 50.f), sf::Vector2f(100.f, 100.f), "Test Button", font_.get(), 25);
+        auto fun = [&]() {
+            game_->pushState(States::GAME, std::make_unique<GameState>(targetWindow_, game_));
+        };
+        testButton_ = std::make_unique<gui::Button>(sf::Vector2f(100.f, 50.f), sf::Vector2f(100.f, 100.f), "Test Button", font_.get(), 25, fun);
         addObserver(testButton_.get());
 }
 
