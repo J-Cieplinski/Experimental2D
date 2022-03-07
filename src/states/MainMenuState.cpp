@@ -16,7 +16,6 @@ void MainMenuState::initButtons() {
     mainMenuFunc["Exit"] = [&]() { quit_ = true; };
     mainMenuFunc["Editor"] = [&]() {  };
 
-
     auto halfWindow = sf::Vector2f(targetWindow_->getSize() / 2u);
 
     std::ifstream buttonsConfigFile("configs/buttons.json");
@@ -51,6 +50,10 @@ MainMenuState::MainMenuState(std::shared_ptr<sf::RenderWindow> targetWindow, Gam
         font_ = std::make_unique<sf::Font>();
         assert(font_->loadFromFile("assets/fonts/LeagueGothic.ttf"));
 
+        assert(backgroundImage_.loadFromFile("assets/textures/mainMenu/background.png"));
+        background_.setSize(sf::Vector2f(targetWindow->getSize()));
+        background_.setTexture(&backgroundImage_);
+
         initButtons();
 }
 
@@ -83,6 +86,8 @@ void MainMenuState::update(const float dt) {
 void MainMenuState::render(sf::RenderTarget* target) {
     target = target ? target : targetWindow_.get();
     target->clear(sf::Color::Black);
+
+    target->draw(background_);
     for(auto& button : buttons_) {
         button.render(*target);
     }

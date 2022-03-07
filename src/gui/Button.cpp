@@ -8,8 +8,6 @@ namespace gui {
         buttonArea_.setFillColor(sf::Color::Transparent);
         buttonArea_.setPosition(position);
         buttonArea_.setSize(size);
-        buttonArea_.setOutlineColor(sf::Color::Black);
-        buttonArea_.setOutlineThickness(1);
 
         text_.setFont(*font_);
         text_.setCharacterSize(characterSize);
