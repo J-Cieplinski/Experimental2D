@@ -20,10 +20,6 @@ State::State(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game, const c
     initKeybinds(keybindsConfig);
 }
 
-State::~State() {
-    targetWindow_.reset();
-}
-
 void State::checkForGameQuit() {
     if(sf::Keyboard::isKeyPressed(keybinds_["QUIT"])) {
         quit_ = true;
@@ -52,11 +48,15 @@ void State::updateMousePos() {
     mouseViewPos_ = targetWindow_->mapPixelToCoords(mouseWindowPos_);
 }
 
-void State::addObserver(gui::Button* button) {
-    observers_.emplace(button);
+void State::addObserver(Observer* observer) {
+    observers_.emplace(observer);
 }
 
-void State::removeObserver(gui::Button* button) {
-    observers_.erase(button);
+void State::removeObserver(Observer* observer) {
+    observers_.erase(observer);
+}
+
+const sf::Vector2i& State::getMouseWindowPos() {
+    return mouseWindowPos_;
 }
 

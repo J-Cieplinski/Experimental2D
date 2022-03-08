@@ -23,6 +23,8 @@ void MainMenuState::initButtons() {
 
     auto buttonsConfig = json::parse(buttonsConfigFile);
     auto mainMenu = buttonsConfig["mainMenu"];
+    auto buttonsAmount = mainMenu["buttons"].size();
+    buttons_.reserve(buttonsAmount);
 
     for(auto& button : mainMenu["buttons"]) {
         auto size = sf::Vector2f(button["width"], button["height"]);
@@ -37,7 +39,7 @@ void MainMenuState::initButtons() {
             charSize = mainMenu["charSize"];
         }
 
-        buttons_.push_back({size, halfWindow + sf::Vector2f(offset["x"], offset["y"]), name, font_, charSize, mainMenuFunc.at(name)});
+        buttons_.emplace_back(*this, size, halfWindow + sf::Vector2f(offset["x"], offset["y"]), name, font_, charSize, mainMenuFunc.at(name));
     }
 
     for(auto& button : buttons_) {
@@ -69,7 +71,7 @@ void MainMenuState::updateFromInput(const float dt) {
 
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
         for(const auto& observer : observers_) {
-            observer->onNotify(Event::MOUSE_CLICK, mouseWindowPos_);
+            observer->onNotify(Event::MOUSE_CLICK, *this);
             if(quitState_) {
                 break;
             }
@@ -96,7 +98,7 @@ void MainMenuState::render(sf::RenderTarget* target) {
 }
 
 void MainMenuState::cleanup() {
-    observers_.clear();
     quitState_ = true;
+    observers_.clear();
     game_ = nullptr;
 }

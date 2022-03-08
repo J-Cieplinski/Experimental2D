@@ -1,9 +1,10 @@
 #include "Button.hpp"
+#include "../states/State.hpp"
 
 namespace gui {
 
-    Button::Button(sf::Vector2f size, sf::Vector2f position, const std::string& text, const sf::Font& font, uint8_t characterSize, std::function<void()> function) :
-        font_(font), highlightColor_(sf::Color::White), normalColor_({200, 200, 200, 200}), buttonCallback_(std::move(function))
+    Button::Button(State& state, sf::Vector2f size, sf::Vector2f position, const std::string& text, const sf::Font& font, uint8_t characterSize, std::function<void()> function) :
+        Observer(state), font_(font), highlightColor_(sf::Color::White), normalColor_({200, 200, 200, 200}), buttonCallback_(std::move(function))
     {
         buttonArea_.setFillColor(sf::Color::Transparent);
         buttonArea_.setPosition(position);
@@ -20,8 +21,8 @@ namespace gui {
         return buttonArea_.getGlobalBounds().contains(sf::Vector2f(mousePos));
     }
 
-    void Button::onNotify(Event event, const sf::Vector2i& mousePos) {
-        if(event == Event::MOUSE_CLICK && isHovered(mousePos)) {
+    void Button::onNotify(Event event, State& state) {
+        if(event == Event::MOUSE_CLICK && isHovered(state.getMouseWindowPos())) {
             buttonCallback_();
         }
     }

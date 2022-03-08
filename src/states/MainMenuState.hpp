@@ -1,4 +1,5 @@
 #include "State.hpp"
+#include "../gui/Button.hpp"
 
 class MainMenuState : public State {
         public:

@@ -3,7 +3,8 @@
 #include <memory>
 #include <set>
 #include "SFML/Graphics.hpp"
-#include "../gui/Button.hpp"
+
+class Observer;
 
 class Game;
 class State {
@@ -15,7 +16,7 @@ class State {
         sf::Vector2i mouseWindowPos_;
         sf::Vector2i mouseScreenPos_;
         sf::Vector2f mouseViewPos_;
-        std::set<gui::Button*> observers_;
+        std::set<Observer*> observers_;
 
         bool quit_ = false;
         bool quitState_ = false;
@@ -24,7 +25,11 @@ class State {
         void initKeybinds(const char* configFile);
     public:
         State(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game, const char* keybindsConfig = "configs/generalKeybinds.json");
-        virtual ~State();
+        State(const State& copyFrom) = default;
+        State& operator=(const State& copyFrom) = default;
+        State(State&& moveFrom) = default;
+        State& operator=(State&& moveFrom) = default;
+        virtual ~State() = default;
 
         void checkForGameQuit();
         bool isQuitting() const;
@@ -32,8 +37,9 @@ class State {
         void unpause();
         void pause();
         void updateMousePos();
-        void addObserver(gui::Button* button);
-        void removeObserver(gui::Button* button);
+        void addObserver(Observer* observer);
+        void removeObserver(Observer* observer);
+        const sf::Vector2i& getMouseWindowPos();
 
         virtual void updateFromInput(const float dt) = 0;
         virtual void update(const float dt) = 0;
