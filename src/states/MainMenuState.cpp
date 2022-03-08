@@ -11,7 +11,7 @@ using json = nlohmann::json;
 
 void MainMenuState::initButtons() {
     std::map<std::string, std::function<void()>> mainMenuFunc;
-    mainMenuFunc["Start"] = [&]() { game_->pushState(States::GAME, std::make_unique<GameState>(targetWindow_, game_)); };
+    mainMenuFunc["Start"] = [&]() { game_->changeState(States::GAME, std::make_unique<GameState>(targetWindow_, game_)); };
     mainMenuFunc["Settings"] = [&]() {  };
     mainMenuFunc["Exit"] = [&]() { quit_ = true; };
     mainMenuFunc["Editor"] = [&]() {  };
@@ -70,6 +70,9 @@ void MainMenuState::updateFromInput(const float dt) {
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
         for(const auto& observer : observers_) {
             observer->onNotify(Event::MOUSE_CLICK, mouseWindowPos_);
+            if(quitState_) {
+                break;
+            }
         }
     }
 }
@@ -93,5 +96,7 @@ void MainMenuState::render(sf::RenderTarget* target) {
 }
 
 void MainMenuState::cleanup() {
+    observers_.clear();
+    quitState_ = true;
     game_ = nullptr;
 }

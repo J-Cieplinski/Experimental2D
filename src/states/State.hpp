@@ -18,6 +18,7 @@ class State {
         std::set<gui::Button*> observers_;
 
         bool quit_ = false;
+        bool quitState_ = false;
         bool paused_ = false;
 
         void initKeybinds(const char* configFile);
