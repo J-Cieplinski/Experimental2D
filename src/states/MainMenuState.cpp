@@ -37,7 +37,7 @@ void MainMenuState::initButtons() {
             charSize = mainMenu["charSize"];
         }
 
-        buttons_.push_back({size, halfWindow + sf::Vector2f(offset["x"], offset["y"]), name, font_.get(), charSize, mainMenuFunc.at(name)});
+        buttons_.push_back({size, halfWindow + sf::Vector2f(offset["x"], offset["y"]), name, font_, charSize, mainMenuFunc.at(name)});
     }
 
     for(auto& button : buttons_) {
@@ -47,8 +47,7 @@ void MainMenuState::initButtons() {
 
 MainMenuState::MainMenuState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
     : State(targetWindow, game) {
-        font_ = std::make_unique<sf::Font>();
-        assert(font_->loadFromFile("assets/fonts/LeagueGothic.ttf"));
+        assert(font_.loadFromFile("assets/fonts/LeagueGothic.ttf"));
 
         assert(backgroundImage_.loadFromFile("assets/textures/mainMenu/background.png"));
         background_.setSize(sf::Vector2f(targetWindow->getSize()));

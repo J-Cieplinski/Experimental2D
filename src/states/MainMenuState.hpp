@@ -11,7 +11,7 @@ class MainMenuState : public State {
 
         private:
         std::vector<gui::Button> buttons_;
-        std::unique_ptr<sf::Font> font_;
+        sf::Font font_;
         sf::Texture backgroundImage_;
         sf::RectangleShape background_;
 
