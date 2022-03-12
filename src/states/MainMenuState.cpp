@@ -80,11 +80,7 @@ void MainMenuState::updateFromInput(const float dt) {
 }
 
 void MainMenuState::update(const float dt) {
-    if(paused_ || quit_) {
-        return;
-    }
-
-    updateFromInput(dt);
+    State::update(dt);
 }
 
 void MainMenuState::render(sf::RenderTarget* target) {

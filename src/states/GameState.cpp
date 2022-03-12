@@ -19,10 +19,7 @@ void GameState::updateFromInput(const float dt) {
 }
 
 void GameState::update(const float dt) {
-    if(paused_ || quit_) {
-        return;
-    }
-    updateFromInput(dt);
+    State::update(dt);
     player_.update(dt);
 }
 
@@ -35,5 +32,3 @@ void GameState::render(sf::RenderTarget* target) {
 void GameState::cleanup() {
     game_ = nullptr;
 }
-
-

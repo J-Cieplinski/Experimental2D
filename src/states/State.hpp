@@ -42,7 +42,7 @@ class State {
         const sf::Vector2i& getMouseWindowPos();
 
         virtual void updateFromInput(const float dt) = 0;
-        virtual void update(const float dt) = 0;
+        virtual void update(const float dt);
         virtual void render(sf::RenderTarget* target = nullptr) = 0;
         virtual void cleanup() = 0;
 

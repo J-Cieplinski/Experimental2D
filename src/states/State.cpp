@@ -60,3 +60,11 @@ const sf::Vector2i& State::getMouseWindowPos() {
     return mouseWindowPos_;
 }
 
+void State::update(const float dt) {
+    if(paused_ || quit_) {
+        return;
+    }
+
+    updateFromInput(dt);
+}
+
