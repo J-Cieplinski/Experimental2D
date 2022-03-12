@@ -4,6 +4,7 @@
 #include "../../dependencies/nlohmann/json.hpp"
 #include "MainMenuState.hpp"
 #include "GameState.hpp"
+#include "SettingsMenuState.hpp"
 #include "../Game.hpp"
 #include "../util.hpp"
 
@@ -12,7 +13,7 @@ using json = nlohmann::json;
 void MainMenuState::initButtons() {
     std::map<std::string, std::function<void()>> mainMenuFunc;
     mainMenuFunc["Start"] = [&]() { game_->changeState(States::GAME, std::make_unique<GameState>(targetWindow_, game_)); };
-    mainMenuFunc["Settings"] = [&]() {  };
+    mainMenuFunc["Settings"] = [&]() { game_->pushState(States::SETTINGS, std::make_unique<SettingsMenuState>(targetWindow_, game_, backgroundImage_, font_));  };
     mainMenuFunc["Exit"] = [&]() { quit_ = true; };
     mainMenuFunc["Editor"] = [&]() {  };
 
@@ -39,10 +40,7 @@ void MainMenuState::initButtons() {
             charSize = mainMenu["charSize"];
         }
 
-        buttons_.emplace_back(*this, size, halfWindow + sf::Vector2f(offset["x"], offset["y"]), name, font_, charSize, mainMenuFunc.at(name));
-    }
-
-    for(auto& button : buttons_) {
+        auto& button = buttons_.emplace_back(*this, size, halfWindow + sf::Vector2f(offset["x"], offset["y"]), name, font_, charSize, mainMenuFunc.at(name));
         addObserver(&button);
     }
 }
@@ -61,12 +59,10 @@ MainMenuState::MainMenuState(std::shared_ptr<sf::RenderWindow> targetWindow, Gam
 void MainMenuState::updateFromInput(const float dt) {
     checkForGameQuit();
 
-    if(game_->event_.type == sf::Event::MouseMoved) {
-        updateMousePos();
+    updateMousePos();
 
-        for(auto& button : buttons_) {
-            button.update(mouseWindowPos_);
-        }
+    for(auto& button : buttons_) {
+        button.update(mouseWindowPos_);
     }
 
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {

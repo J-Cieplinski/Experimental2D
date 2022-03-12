@@ -2,9 +2,10 @@
 #include <cmath>
 
 enum class States {
-    GAME = 1,
-    PAUSED = 2,
-    MENU = 3
+    GAME = 0,
+    PAUSED,
+    MENU,
+    SETTINGS
 };
 
 enum class Event {
