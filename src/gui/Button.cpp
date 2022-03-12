@@ -14,7 +14,7 @@ namespace gui {
         text_.setCharacterSize(characterSize);
         text_.setString(text);
         text_.setFillColor(normalColor_);
-        text_.setPosition(position.x + (size.x / 2) - (text_.getGlobalBounds().width / 2), position.y + (text_.getGlobalBounds().height / 2) );
+        text_.setPosition(position.x + (size.x / 2) - (text_.getGlobalBounds().width / 2), position.y + (text_.getGlobalBounds().height / 2));
     }
 
     bool Button::isHovered(const sf::Vector2i& mousePos) {

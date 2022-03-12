@@ -39,5 +39,52 @@
                 }
             }
         ]
+    },
+    "settings": {
+        "charSize": 25,
+        "buttons":[
+            {
+                "name": "Apply",
+                "width": 150,
+                "height": 50,
+                "centerOffset": {
+                    "x": -100,
+                    "y": 200
+                }
+            },
+            {
+                "name": "Back",
+                "width": 150,
+                "height": 50,
+                "centerOffset": {
+                    "x": 100,
+                    "y": 200
+                }
+            }
+        ],
+        "lists": {
+            "Change Resolution": {
+                "name": "Change Resolution",
+                "charSize": 25,
+                "width": 150,
+                "height": 50,
+                "centerOffset": {
+                    "x": 100,
+                    "y": 200
+                },
+                "options": {
+                    "800x600": {
+                        "name": "800x600",
+                        "width": 800,
+                        "height": 600
+                    },
+                    "1920x1080": {
+                        "name": "1920x1080",
+                        "width": 1920,
+                        "height": 1080
+                    }
+                }
+            }
+        }
     }
 }
