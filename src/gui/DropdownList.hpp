@@ -8,9 +8,9 @@
 using json = nlohmann::json;
 
 namespace gui {
-    class List : public Observer {
+    class DropdownList : public Observer {
         public:
-            List(State& state, json& itemList, sf::Font& font, std::map<std::string, std::function<void()>> callbacks);
+            DropdownList(State& state, json& itemList, sf::Font& font, std::map<std::string, std::function<void()>> callbacks);
             void onNotify(Event event, State& state) override;
             void render(sf::RenderTarget& target);
             void update(const sf::Vector2i& mousePos);

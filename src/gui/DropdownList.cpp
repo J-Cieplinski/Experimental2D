@@ -1,7 +1,7 @@
-#include "List.hpp"
+#include "DropdownList.hpp"
 
 namespace gui {
-    List::List(State& state, json& itemList, sf::Font& font, std::map<std::string, std::function<void()>> callbacks)
+    DropdownList::DropdownList(State& state, json& itemList, sf::Font& font, std::map<std::string, std::function<void()>> callbacks)
         : Observer(state)
     {
         const auto listButtonName = itemList["name"];
@@ -24,7 +24,7 @@ namespace gui {
         }
     }
 
-    void List::onNotify(Event event, State& state) {
+    void DropdownList::onNotify(Event event, State& state) {
         if(isActive_) {
             for(auto& item : listItems_) {
                 item.onNotify(event, state);
@@ -34,7 +34,7 @@ namespace gui {
         }
     }
 
-    void List::render(sf::RenderTarget& target) {
+    void DropdownList::render(sf::RenderTarget& target) {
         button_->render(target);
         if(isActive_) {
             for(auto& item : listItems_) {
@@ -43,7 +43,7 @@ namespace gui {
         }
     }
 
-    void List::update(const sf::Vector2i& mousePos) {
+    void DropdownList::update(const sf::Vector2i& mousePos) {
         button_->update(mousePos);
         if(isActive_) {
             for(auto& item : listItems_) {

@@ -1,7 +1,7 @@
 #pragma once
 #include "State.hpp"
 #include "../gui/Button.hpp"
-#include "../gui/List.hpp"
+#include "../gui/DropdownList.hpp"
 
 class SettingsMenuState : public State {
     public:

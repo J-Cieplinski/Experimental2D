@@ -8,7 +8,7 @@
 namespace gui {
     class Button : public Observer {
         public:
-            friend class List;
+            friend class DropdownList;
             Button(State& state, sf::Vector2f size, sf::Vector2f position, const std::string& text, const sf::Font& font, uint8_t characterSize, std::function<void()> function);
 
             void onNotify(Event event, State& state) override;
