@@ -2,7 +2,7 @@
 
 namespace gui {
     DropdownList::DropdownList(State& state, json& itemList, sf::Font& font, std::map<std::string, std::function<void()>> callbacks) :
-    Button(state, sf::Vector2f(itemList["width"], itemList["height"]), sf::Vector2f(itemList["centerOffset"]["x"],itemList["centerOffset"]["y"]), itemList["name"], font, itemList["charSize"], [&]() { isActive_ = true; }) {
+    Button(state, sf::Vector2f(itemList["width"], itemList["height"]), sf::Vector2f(itemList["centerOffset"]["x"],itemList["centerOffset"]["y"]), itemList["name"], font, itemList["charSize"], [&]() { isActive_ = !isActive_; }) {
         const auto charSize = itemList["charSize"];
         const float width = itemList["width"];
         const float height = itemList["height"];
@@ -12,9 +12,8 @@ namespace gui {
         listItems_.reserve(callbacks.size());
         for(const auto& item : callbacks) {
             //TODO: calculate buttons positions
-            auto pos = mainButtonPos;
+            auto pos = mainButtonPos + sf::Vector2f{200, 0};
             auto& button = listItems_.emplace_back(state, sizeVector, pos, item.first, font, charSize, item.second);
-            state.addObserver(&button);
         }
     }
 
@@ -23,9 +22,8 @@ namespace gui {
             for(auto& item : listItems_) {
                 item.onNotify(event, state);
             }
-        } else {
-            Button::onNotify(event, state);
         }
+        Button::onNotify(event, state);
     }
 
     void DropdownList::render(sf::RenderTarget& target) {

@@ -1,5 +1,6 @@
 #include <fstream>
 #include "SettingsMenuState.hpp"
+#include "../gui/DropdownList.hpp"
 #include "../Game.hpp"
 
 SettingsMenuState::SettingsMenuState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game, const sf::Texture& backgroundImage, const sf::Font& font)
@@ -7,11 +8,10 @@ SettingsMenuState::SettingsMenuState(std::shared_ptr<sf::RenderWindow> targetWin
         background_.setSize(sf::Vector2f(targetWindow->getSize()));
         background_.setTexture(&backgroundImage);
 
-        std::map<std::string, std::function<void()>> mainMenuFunc;
-        mainMenuFunc["Change Resolution"] = [&]() { };
-        mainMenuFunc["Apply"] = [&]() { };
-        mainMenuFunc["Back"] = [&]() { game_->changeState(States::MENU); };
-        mainMenuFunc["Editor"] = [&]() { };
+        std::map<std::string, std::function<void()>> settingsMenuFunc;
+        settingsMenuFunc["Apply"] = [&]() { };
+        settingsMenuFunc["Back"] = [&]() { game_->changeState(States::MENU); };
+
 
         const auto halfWindow = sf::Vector2f(targetWindow_->getSize() / 2u);
 
@@ -36,8 +36,27 @@ SettingsMenuState::SettingsMenuState(std::shared_ptr<sf::RenderWindow> targetWin
                 charSize = settings["charSize"];
             }
 
-            auto& button = buttons_.emplace_back(*this, size, halfWindow + sf::Vector2f(offset["x"], offset["y"]), name, font_, charSize, mainMenuFunc.at(name));
-            addObserver(&button);
+            buttons_.push_back(std::make_unique<gui::Button>(*this, size, halfWindow + sf::Vector2f(offset["x"], offset["y"]), name, font_, charSize, settingsMenuFunc.at(name)));
+         }
+
+        for(auto& listItem : settings["lists"]) {
+            auto size = sf::Vector2f(listItem["width"], listItem["height"]);
+            auto offset = listItem["centerOffset"];
+            std::string name = listItem["name"];
+
+            std::map<std::string, std::function<void()>> funcs;
+
+            for(auto& option : listItem["options"]) {
+                funcs[option["name"]] = [&]() {
+                    targetWindow_->create(sf::VideoMode(option["width"], option["height"]), game->getTitle());
+                };
+            }
+
+            //gui::DropdownList item(*this, listItem, font_, funcs);
+            buttons_.push_back(std::make_unique<gui::DropdownList>(*this, listItem, font_, funcs));
+        }
+        for(auto& button : buttons_) {
+            addObserver(button.get());
         }
 }
 
@@ -48,7 +67,7 @@ void SettingsMenuState::updateFromInput(const float dt) {
         updateMousePos();
 
         for(auto& button : buttons_) {
-            button.update(mouseWindowPos_);
+            button->update(mouseWindowPos_);
         }
     }
 
@@ -72,7 +91,7 @@ void SettingsMenuState::render(sf::RenderTarget* target) {
 
     target->draw(background_);
     for(auto& button : buttons_) {
-        button.render(*target);
+        button->render(*target);
     }
 }
 

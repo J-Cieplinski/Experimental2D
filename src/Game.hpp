@@ -15,6 +15,7 @@ class Game {
 
         void changeState(States stateId, std::unique_ptr<State> state = nullptr);
         void pushState(States stateId, std::unique_ptr<State> state = nullptr);
+        const std::string& getTitle() const;
 
         sf::Event event_;
     private:
@@ -24,6 +25,8 @@ class Game {
 
         std::map<States, std::unique_ptr<State>> states_;
         State* currentState_;
+
+        std::string title_;
 
         void update();
         void updateEvents();

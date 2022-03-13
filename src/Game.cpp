@@ -19,7 +19,8 @@ void Game::initWindow() {
     configFile.close();
     auto windowConfig = config["window"];
 
-    window_ = std::make_unique<sf::RenderWindow>(sf::VideoMode(windowConfig["width"], windowConfig["height"]), windowConfig["title"]);
+    title_ = windowConfig["title"];
+    window_ = std::make_unique<sf::RenderWindow>(sf::VideoMode(windowConfig["width"], windowConfig["height"]), title_);
     if(windowConfig["VSync"]["enabled"]) {
         window_->setVerticalSyncEnabled(true);
         window_->setFramerateLimit(windowConfig["VSync"]["FPScap"]);
@@ -80,6 +81,10 @@ void Game::pushState(States stateId, std::unique_ptr<State> state) {
     currentState_->unpause();
 }
 
+const std::string& Game::getTitle() const {
+    return title_;
+}
+
 void Game::update() {
     updateEvents();
     if(currentState_) {
@@ -91,7 +96,7 @@ void Game::update() {
 }
 
 void Game::updateEvents() {
-    while (window_->pollEvent(event_))
+    while(window_->pollEvent(event_))
     {
         if(event_.type == sf::Event::Closed) {
             window_->close();
