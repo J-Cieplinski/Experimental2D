@@ -71,7 +71,8 @@ void SettingsMenuState::updateFromInput(const float dt) {
         }
     }
 
-    if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+    if(game_->event_.type == sf::Event::MouseButtonReleased &&
+        game_->event_.mouseButton.button == sf::Mouse::Button::Left) {
         for(const auto& observer : observers_) {
             observer->onNotify(Event::MOUSE_CLICK, *this);
             if(quitState_) {

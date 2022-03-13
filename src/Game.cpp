@@ -93,6 +93,7 @@ void Game::update() {
             window_->close();
         }
     }
+    event_ = sf::Event();
 }
 
 void Game::updateEvents() {
