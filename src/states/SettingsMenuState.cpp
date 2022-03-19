@@ -2,6 +2,7 @@
 #include "SettingsMenuState.hpp"
 #include "../gui/DropdownList.hpp"
 #include "../Game.hpp"
+#include "MainMenuState.hpp"
 
 SettingsMenuState::SettingsMenuState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game, const sf::Texture& backgroundImage, const sf::Font& font)
     : State(targetWindow, game), font_(font), backgroundImage_(backgroundImage) {
@@ -46,13 +47,15 @@ SettingsMenuState::SettingsMenuState(std::shared_ptr<sf::RenderWindow> targetWin
 
             std::map<std::string, std::function<void()>> funcs;
 
+            const auto title = game->getTitle();
             for(auto& option : listItem["options"]) {
-                funcs[option["name"]] = [&]() {
-                    targetWindow_->create(sf::VideoMode(option["width"], option["height"]), game->getTitle());
+                int width = option["width"];
+                int height = option["height"];
+                funcs[option["name"]] = [=]() {
+                    targetWindow_->create(sf::VideoMode(width, height), title);
                 };
             }
 
-            //gui::DropdownList item(*this, listItem, font_, funcs);
             buttons_.push_back(std::make_unique<gui::DropdownList>(*this, listItem, font_, funcs));
         }
         for(auto& button : buttons_) {

@@ -81,6 +81,12 @@ void Game::pushState(States stateId, std::unique_ptr<State> state) {
     currentState_->unpause();
 }
 
+void Game::pauseAllStates() {
+    for(auto& state : states_) {
+        state.second->pause();
+    }
+}
+
 const std::string& Game::getTitle() const {
     return title_;
 }

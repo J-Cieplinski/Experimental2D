@@ -15,6 +15,7 @@ class Game {
 
         void changeState(States stateId, std::unique_ptr<State> state = nullptr);
         void pushState(States stateId, std::unique_ptr<State> state = nullptr);
+        void pauseAllStates();
         const std::string& getTitle() const;
 
         sf::Event event_;
