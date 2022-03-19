@@ -9,12 +9,17 @@ namespace gui {
         sf::Vector2f sizeVector {width, height};
         const auto mainButtonPos = buttonArea_.getPosition();
 
-        listItems_.reserve(callbacks.size());
+        auto numberOfButtons = callbacks.size();
+        listItems_.reserve(numberOfButtons);
+        auto counter = numberOfButtons / 2.f;
         for(const auto& item : callbacks) {
-            //TODO: calculate buttons positions
-            auto pos = mainButtonPos + sf::Vector2f{200, 0};
+            auto pos = mainButtonPos + sf::Vector2f{200, height * counter--};
             auto& button = listItems_.emplace_back(state, sizeVector, pos, item.first, font, charSize, item.second);
         }
+    }
+
+    DropdownList::~DropdownList() {
+        isActive_ = false;
     }
 
     void DropdownList::onNotify(Event event, State& state) {
