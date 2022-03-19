@@ -45,7 +45,7 @@
         "buttons":[
             {
                 "name": "Apply",
-                "width": 150,
+                "width": 100,
                 "height": 50,
                 "centerOffset": {
                     "x": -100,
@@ -54,11 +54,11 @@
             },
             {
                 "name": "Back",
-                "width": 150,
+                "width": 100,
                 "height": 50,
                 "centerOffset": {
-                    "x": 100,
-                    "y": 200
+                    "x": 10,
+                    "y": 204
                 }
             }
         ],
@@ -82,6 +82,11 @@
                         "name": "1920x1080",
                         "width": 1920,
                         "height": 1080
+                    },
+                    "2560x1440": {
+                        "name": "2560x1440",
+                        "width": 2560,
+                        "height": 1440
                     }
                 }
             }

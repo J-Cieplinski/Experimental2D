@@ -61,7 +61,7 @@ const sf::Vector2i& State::getMouseWindowPos() {
 }
 
 void State::update(const float dt) {
-    if(paused_ || quit_) {
+    if(paused_ || quit_ || quitState_) {
         return;
     }
 
