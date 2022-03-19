@@ -40,8 +40,8 @@ void MainMenuState::initButtons() {
             charSize = mainMenu["charSize"];
         }
 
-        auto& button = buttons_.emplace_back(*this, size, halfWindow + sf::Vector2f(offset["x"], offset["y"]), name, font_, charSize, mainMenuFunc.at(name));
-        addObserver(&button);
+        auto& addedButton = buttons_.emplace_back(*this, size, halfWindow + sf::Vector2f(offset["x"], offset["y"]), name, font_, charSize, mainMenuFunc.at(name));
+        addObserver(&addedButton);
     }
 }
 
