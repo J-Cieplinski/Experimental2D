@@ -1,4 +1,5 @@
 #include <fstream>
+#include <ostream>
 #include "SettingsMenuState.hpp"
 #include "../gui/DropdownList.hpp"
 #include "../Game.hpp"
@@ -12,7 +13,6 @@ SettingsMenuState::SettingsMenuState(std::shared_ptr<sf::RenderWindow> targetWin
         std::map<std::string, std::function<void()>> settingsMenuFunc;
         settingsMenuFunc["Apply"] = [&]() { };
         settingsMenuFunc["Back"] = [&]() { game_->changeState(States::MENU); };
-
 
         const auto halfWindow = sf::Vector2f(targetWindow_->getSize() / 2u);
 
@@ -53,6 +53,17 @@ SettingsMenuState::SettingsMenuState(std::shared_ptr<sf::RenderWindow> targetWin
                 int height = option["height"];
                 funcs[option["name"]] = [=]() {
                     targetWindow_->create(sf::VideoMode(width, height), title);
+                    std::ifstream appConfigFile("configs/window.json");
+                    assert(appConfigFile.is_open());
+
+                    auto appConfig = json::parse(appConfigFile);
+
+                    appConfig["window"]["width"] = width;
+                    appConfig["window"]["height"] = height;
+
+                    std::ofstream appConfigOutput("configs/window.json");
+                    assert(appConfigOutput.is_open());
+                    appConfigOutput << std::setw(4) << appConfig;
                 };
             }
 
