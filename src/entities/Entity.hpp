@@ -7,6 +7,7 @@
 class Entity {
     public:
         Entity(EntityControlComponent* input, PhysicsComponent* physics, GraphicsComponent* graphics);
+        Entity() = default;
         sf::Vector2f position_ {0, 0};
         sf::Vector2f direction_ {0, 0};
 

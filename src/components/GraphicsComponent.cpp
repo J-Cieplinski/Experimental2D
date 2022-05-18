@@ -1,14 +1,18 @@
 #include "GraphicsComponent.hpp"
 #include "../entities/Entity.hpp"
 
-GraphicsComponent::GraphicsComponent() {
-    shape_.setSize({10, 10});
-    shape_.setFillColor(sf::Color::Black);
+GraphicsComponent::GraphicsComponent() : animationComponent_(sprite_) {
+    //sprite_.setScale(2,2);
+    //sprite_.setColor(sf::Color::Black);
 }
 void GraphicsComponent::render(sf::RenderTarget& target) {
-    target.draw(shape_);
+    target.draw(sprite_);
 }
 
 void GraphicsComponent::update(const Entity& entity) {
-    shape_.setPosition(entity.position_);
+    sprite_.setPosition(entity.position_);
+}
+
+AnimationComponent& GraphicsComponent::getAnimationComponent() {
+    return animationComponent_;
 }

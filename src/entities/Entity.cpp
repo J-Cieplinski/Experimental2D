@@ -11,6 +11,14 @@ Entity::Entity(EntityControlComponent* input, PhysicsComponent* physics, Graphic
 void Entity::update(float dt) {
     input_->update(*this);
     physics_->update(dt, *this);
+    switch(input_->getState()){
+        case MovementState::IDLE:
+            graphics_->getAnimationComponent().play("IDLE", dt);
+            break;
+        case MovementState::MOVING_RIGHT:
+            graphics_->getAnimationComponent().play("RIGHT", dt);
+            break;
+    }
     graphics_->update(*this);
 }
 
