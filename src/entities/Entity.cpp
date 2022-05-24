@@ -18,6 +18,9 @@ void Entity::update(float dt) {
         case MovementState::MOVING_RIGHT:
             graphics_->getAnimationComponent().play("RIGHT", dt);
             break;
+        case MovementState::MOVING_LEFT:
+            graphics_->getAnimationComponent().play("LEFT", dt);
+            break;
     }
     graphics_->update(*this);
 }

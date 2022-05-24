@@ -10,4 +10,6 @@ class GameState : public State {
         void cleanup() override;
     private:
         Entity player_;
+
+        void initPlayer();
 };

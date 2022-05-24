@@ -10,17 +10,7 @@
 GameState::GameState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
     : State(targetWindow, game)
 {
-    sf::Texture playerTextureIdle;
-    assert(playerTextureIdle.loadFromFile("assets/textures/characters/PC/_Idle.png"));
-
-    sf::Texture playerTextureRun;
-    assert(playerTextureRun.loadFromFile("assets/textures/characters/PC/_Run.png"));
-
-    auto playerGraphics = new GraphicsComponent();
-    auto& animComponent = playerGraphics->getAnimationComponent();
-    animComponent.addAnimation("IDLE", std::move(playerTextureIdle), 120, 80, 10, 9, 0, 0, 0);
-    animComponent.addAnimation("RIGHT", std::move(playerTextureRun), 120, 80, 5, 9, 0, 0, 0);
-    player_ = Entity(new PlayerControlComponent(keybinds_), new PhysicsComponent(), playerGraphics);
+    initPlayer();
 }
 
 void GameState::updateFromInput(const float dt) {
@@ -43,4 +33,19 @@ void GameState::render(sf::RenderTarget* target) {
 
 void GameState::cleanup() {
     game_ = nullptr;
+}
+
+void GameState::initPlayer() {
+    sf::Texture pcTexture;
+    assert(pcTexture.loadFromFile("assets/textures/characters/PC/PC1.png"));
+
+    auto playerGraphics = new GraphicsComponent();
+    auto& animComponent = playerGraphics->getAnimationComponent();
+    animComponent.addTextureSheet(std::move(pcTexture), {2, 2});
+
+    animComponent.addAnimation("IDLE", 120, 80, 10, 9, 2, 0, 2);
+    animComponent.addAnimation("RIGHT", 120, 80, 10, 9, 1, 0, 1);
+    animComponent.addAnimation("LEFT", 120, 80, 10, 9, 0, 0, 0);
+
+    player_ = Entity(new PlayerControlComponent(keybinds_), new PhysicsComponent(), playerGraphics);
 }
