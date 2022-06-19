@@ -1,6 +1,7 @@
 #include "GameState.hpp"
 #include "MainMenuState.hpp"
 #include <cassert>
+#include "../util.hpp"
 #include "../Game.hpp"
 #include "../components/PlayerControlComponent.hpp"
 #include "../components/GraphicsComponent.hpp"
@@ -43,9 +44,9 @@ void GameState::initPlayer() {
     auto& animComponent = playerGraphics->getAnimationComponent();
     animComponent.addTextureSheet(std::move(pcTexture), {2, 2});
 
-    animComponent.addAnimation("IDLE", 120, 80, 10, 9, 2, 0, 2);
-    animComponent.addAnimation("RIGHT", 120, 80, 10, 9, 1, 0, 1);
-    animComponent.addAnimation("LEFT", 120, 80, 10, 9, 0, 0, 0);
+    animComponent.addAnimation(EntityState::IDLE, 120, 80, 10, 9, 2, 0, 2);
+    animComponent.addAnimation(EntityState::MOVING_RIGHT, 120, 80, 10, 9, 1, 0, 1);
+    animComponent.addAnimation(EntityState::MOVING_LEFT, 120, 80, 10, 9, 0, 0, 0);
 
     player_ = Entity(new PlayerControlComponent(keybinds_), new PhysicsComponent(), playerGraphics);
 }

@@ -12,14 +12,14 @@ void Entity::update(float dt) {
     input_->update(*this);
     physics_->update(dt, *this);
     switch(input_->getState()){
-        case MovementState::IDLE:
-            graphics_->getAnimationComponent().play("IDLE", dt);
+        case EntityState::IDLE:
+            graphics_->getAnimationComponent().play(EntityState::IDLE, dt);
             break;
-        case MovementState::MOVING_RIGHT:
-            graphics_->getAnimationComponent().play("RIGHT", dt);
+        case EntityState::MOVING_RIGHT:
+            graphics_->getAnimationComponent().play(EntityState::MOVING_RIGHT, dt);
             break;
-        case MovementState::MOVING_LEFT:
-            graphics_->getAnimationComponent().play("LEFT", dt);
+        case EntityState::MOVING_LEFT:
+            graphics_->getAnimationComponent().play(EntityState::MOVING_LEFT, dt);
             break;
     }
     graphics_->update(*this);

@@ -6,6 +6,6 @@ void EntityControlComponent::update(Entity& target) {
 
 }
 
-MovementState EntityControlComponent::getState() {
+EntityState EntityControlComponent::getState() {
     return state_;
 }

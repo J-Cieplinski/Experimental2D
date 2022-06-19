@@ -1,4 +1,6 @@
 #include "AnimationComponent.hpp"
+#include "../util.hpp"
+
 AnimationComponent::Animation::Animation(sf::Sprite& sprite,
                                         int frameWidth, int frameHeight, float animationTime,
                                         int framesX, int framesY, int startFrameX, int startFrameY)
@@ -47,11 +49,11 @@ void AnimationComponent::addTextureSheet(sf::Texture&& textureSheet, const sf::V
     sprite_.setScale(scale);
 }
 
-void AnimationComponent::play(const std::string& key, const float dt) {
+void AnimationComponent::play(EntityState key, const float dt) {
     animations_[key]->play(dt);
 }
 
-void AnimationComponent::addAnimation(const std::string& key, int frameWidth, int frameHeight, float animationTime,
+void AnimationComponent::addAnimation(EntityState key, int frameWidth, int frameHeight, float animationTime,
                                         int framesX, int framesY, int startFrameX, int startFrameY) {
         animations_[key] = std::make_unique<Animation>(sprite_, frameWidth, frameHeight, animationTime, framesX, framesY, startFrameX, startFrameY);
 }

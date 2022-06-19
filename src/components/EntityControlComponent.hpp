@@ -1,18 +1,11 @@
 #pragma once
-
-enum class MovementState {
-    MOVING_RIGHT,
-    MOVING_LEFT,
-    MOVING_UP,
-    MOVING_DOWN,
-    IDLE
-};
+#include "../util.hpp"
 
 class Entity;
 class EntityControlComponent {
     public:
         virtual void update(Entity& target);
-        MovementState getState();
+        EntityState getState();
     protected:
-        MovementState state_;
+        EntityState state_;
 };

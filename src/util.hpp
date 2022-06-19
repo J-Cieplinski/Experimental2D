@@ -2,14 +2,22 @@
 #include <cmath>
 
 enum class States {
-    GAME = 0,
+    GAME,
     PAUSED,
     MENU,
     SETTINGS
 };
 
 enum class Event {
-    MOUSE_CLICK = 1
+    MOUSE_CLICK
+};
+
+enum class EntityState {
+    MOVING_RIGHT,
+    MOVING_LEFT,
+    MOVING_UP,
+    MOVING_DOWN,
+    IDLE
 };
 
 // Linear interpolation function. Works for vectors
