@@ -56,7 +56,7 @@ void State::removeObserver(Observer* observer) {
     observers_.erase(observer);
 }
 
-const sf::Vector2i& State::getMouseWindowPos() {
+const sf::Vector2i& State::getMouseWindowPos() const {
     return mouseWindowPos_;
 }
 

@@ -22,13 +22,17 @@ namespace gui {
         isActive_ = false;
     }
 
-    void DropdownList::onNotify(Event event, State& state) {
+    bool DropdownList::onNotify(Event event, const State& state) {
+        bool wasProcessed = false;
         if(isActive_) {
             for(auto& item : listItems_) {
-                item.onNotify(event, state);
+                if(wasProcessed = item.onNotify(event, state)) {
+                    isActive_ = false;
+                    break;
+                }
             }
         }
-        Button::onNotify(event, state);
+        return wasProcessed || Button::onNotify(event, state);
     }
 
     void DropdownList::render(sf::RenderTarget& target) {

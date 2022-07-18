@@ -29,4 +29,8 @@ void PlayerControlComponent::update(Entity& target) {
         target.direction_.x += 1;
         state_ = EntityState::MOVING_RIGHT;
     }
+
+    if(sf::Keyboard::isKeyPressed(keybinds_["ATTACK"])) {
+        state_ = EntityState::ATTACKING;
+    }
 }

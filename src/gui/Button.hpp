@@ -11,7 +11,7 @@ namespace gui {
             friend class DropdownList;
             Button(State& state, sf::Vector2f size, sf::Vector2f position, const std::string& text, const sf::Font& font, uint8_t characterSize, std::function<void()> function);
 
-            virtual void onNotify(Event event, State& state) override;
+            virtual bool onNotify(Event event, const State& state) override;
             virtual void render(sf::RenderTarget& target);
             virtual void update(const sf::Vector2i& mousePos);
         private:

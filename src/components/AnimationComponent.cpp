@@ -6,7 +6,7 @@ AnimationComponent::Animation::Animation(sf::Sprite& sprite,
                                         int framesX, int framesY, int startFrameX, int startFrameY)
     : sprite_(sprite), frameHeight_(frameHeight), frameWidth_(frameWidth), animationTime_(animationTime),
         firstFrame_{startFrameX * frameWidth, startFrameY * frameHeight, frameWidth, frameHeight},
-        lastFrame_{framesX * frameWidth, framesY * frameHeight, frameWidth, frameHeight},
+        lastFrame_{((framesX ? framesX : 1) - 1) * frameWidth, (framesY + startFrameY) * frameHeight, frameWidth, frameHeight},
         currentFrame_{firstFrame_}
 {
     sprite_.setTextureRect(currentFrame_);
@@ -50,6 +50,9 @@ void AnimationComponent::addTextureSheet(sf::Texture&& textureSheet, const sf::V
 }
 
 void AnimationComponent::play(EntityState key, const float dt) {
+    if(!animations_[key]) {
+        return;
+    }
     animations_[key]->play(dt);
 }
 

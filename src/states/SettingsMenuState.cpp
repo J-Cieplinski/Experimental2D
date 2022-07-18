@@ -52,7 +52,6 @@ SettingsMenuState::SettingsMenuState(std::shared_ptr<sf::RenderWindow> targetWin
                 int width = option["width"];
                 int height = option["height"];
                 funcs[option["name"]] = [=]() {
-                    targetWindow_->create(sf::VideoMode(width, height), title);
                     std::ifstream appConfigFile("configs/window.json");
                     assert(appConfigFile.is_open());
 

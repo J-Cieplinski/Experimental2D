@@ -17,4 +17,6 @@ class Entity {
         std::unique_ptr<EntityControlComponent> input_;
         std::unique_ptr<PhysicsComponent> physics_;
         std::unique_ptr<GraphicsComponent> graphics_;
+
+        void playAnim(float dt);
 };

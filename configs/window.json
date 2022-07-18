@@ -1,11 +1,11 @@
 {
     "window": {
-        "width": 800,
-        "height": 600,
-        "title": "Some 2D thing",
         "VSync": {
-            "enabled": false,
-            "FPScap": 144
-        }
+            "FPScap": 144,
+            "enabled": false
+        },
+        "height": 1080,
+        "title": "Some 2D thing",
+        "width": 1920
     }
 }

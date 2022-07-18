@@ -38,15 +38,17 @@ void GameState::cleanup() {
 
 void GameState::initPlayer() {
     sf::Texture pcTexture;
-    assert(pcTexture.loadFromFile("assets/textures/characters/PC/PC1.png"));
+    assert(pcTexture.loadFromFile("assets/textures/characters/PC/Template_Male.png"));
 
     auto playerGraphics = new GraphicsComponent();
     auto& animComponent = playerGraphics->getAnimationComponent();
     animComponent.addTextureSheet(std::move(pcTexture), {2, 2});
 
-    animComponent.addAnimation(EntityState::IDLE, 120, 80, 10, 9, 2, 0, 2);
-    animComponent.addAnimation(EntityState::MOVING_RIGHT, 120, 80, 10, 9, 1, 0, 1);
-    animComponent.addAnimation(EntityState::MOVING_LEFT, 120, 80, 10, 9, 0, 0, 0);
+    animComponent.addAnimation(EntityState::IDLE, 128, 128, 5, 0, 0, 0, 0);
+    animComponent.addAnimation(EntityState::MOVING_RIGHT, 128, 128, 16, 3, 0, 0, 2);
+    animComponent.addAnimation(EntityState::MOVING_LEFT, 128, 128, 16, 3, 0, 0, 1);
+    animComponent.addAnimation(EntityState::MOVING_UP, 128, 128, 16, 3, 0, 0, 3);
+    animComponent.addAnimation(EntityState::MOVING_DOWN, 128, 128, 16, 3, 0, 0, 0);
 
     player_ = Entity(new PlayerControlComponent(keybinds_), new PhysicsComponent(), playerGraphics);
 }

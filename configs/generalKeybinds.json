@@ -5,5 +5,6 @@
     "DOWN": 18,
     "LEFT": 0,
     "RIGHT": 3,
+    "ATTACK": 57,
     "CONFIRM": 58
 }

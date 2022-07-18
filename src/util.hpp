@@ -17,7 +17,8 @@ enum class EntityState {
     MOVING_LEFT,
     MOVING_UP,
     MOVING_DOWN,
-    IDLE
+    IDLE,
+    ATTACKING
 };
 
 // Linear interpolation function. Works for vectors

@@ -10,10 +10,8 @@ class Observer {
             state_.removeObserver(this);
         };
         Observer(const Observer& copyFrom) = default;
-        Observer& operator=(const Observer& copyFrom) = default;
         Observer(Observer&& moveFrom) = default;
-        Observer& operator=(Observer&& moveFrom) = default;
-        virtual void onNotify(Event event, State& state) = 0;
+        virtual bool onNotify(Event event, const State& state) = 0;
     private:
         State& state_;
 };

@@ -39,7 +39,7 @@ class State {
         void updateMousePos();
         void addObserver(Observer* observer);
         void removeObserver(Observer* observer);
-        const sf::Vector2i& getMouseWindowPos();
+        const sf::Vector2i& getMouseWindowPos() const;
 
         virtual void update(const float dt);
 

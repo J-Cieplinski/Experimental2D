@@ -12,7 +12,7 @@ namespace gui {
         public:
             DropdownList(State& state, json& itemList, sf::Font& font, std::map<std::string, std::function<void()>> callbacks);
             ~DropdownList();
-            void onNotify(Event event, State& state) override;
+            bool onNotify(Event event, const State& state) override;
             void render(sf::RenderTarget& target);
             void update(const sf::Vector2i& mousePos);
         private:

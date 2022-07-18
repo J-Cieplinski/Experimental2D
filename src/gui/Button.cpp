@@ -21,10 +21,12 @@ namespace gui {
         return buttonArea_.getGlobalBounds().contains(sf::Vector2f(mousePos));
     }
 
-    void Button::onNotify(Event event, State& state) {
+    bool Button::onNotify(Event event, const State& state) {
         if(event == Event::MOUSE_CLICK && isHovered(state.getMouseWindowPos())) {
             buttonCallback_();
+            return true;
         }
+        return false;
     }
 
     void Button::render(sf::RenderTarget& target) {
