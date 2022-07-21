@@ -46,5 +46,4 @@ class State {
         virtual void updateFromInput(const float dt) = 0;
         virtual void render(sf::RenderTarget* target = nullptr) = 0;
         virtual void cleanup() = 0;
-
 };

@@ -5,7 +5,8 @@ enum class States {
     GAME,
     PAUSED,
     MENU,
-    SETTINGS
+    SETTINGS,
+    EDITOR
 };
 
 enum class Event {

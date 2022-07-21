@@ -81,6 +81,19 @@ void Game::pushState(States stateId, std::unique_ptr<State> state) {
     currentState_->unpause();
 }
 
+void Game::quitState(States stateId) {
+    auto stateToQuit = states_[stateId].get();
+    if(!stateToQuit || stateToQuit == currentState_) {
+        return; //cannot quit current state or non existent one
+    }
+
+    auto it = std::find_if(states_.begin(), states_.end(), [&](const auto& el) {
+        return el.second.get() == stateToQuit;
+    });
+    states_.erase(it);
+    stateToQuit = nullptr;
+}
+
 void Game::pauseAllStates() {
     for(auto& state : states_) {
         state.second->pause();

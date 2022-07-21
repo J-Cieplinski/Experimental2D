@@ -5,6 +5,7 @@
 #include "MainMenuState.hpp"
 #include "GameState.hpp"
 #include "SettingsMenuState.hpp"
+#include "EditorState.hpp"
 #include "../Game.hpp"
 #include "../util.hpp"
 
@@ -15,7 +16,10 @@ void MainMenuState::initButtons() {
     mainMenuFunc["Start"] = [&]() { game_->changeState(States::GAME, std::make_unique<GameState>(targetWindow_, game_)); };
     mainMenuFunc["Settings"] = [&]() { game_->pushState(States::SETTINGS, std::make_unique<SettingsMenuState>(targetWindow_, game_, backgroundImage_, font_));  };
     mainMenuFunc["Exit"] = [&]() { quit_ = true; };
-    mainMenuFunc["Editor"] = [&]() {  };
+    mainMenuFunc["Editor"] = [&]() {
+        game_->quitState(States::GAME);
+        game_->pushState(States::EDITOR, std::make_unique<EditorState>(targetWindow_, game_));
+    };
 
     auto halfWindow = sf::Vector2f(targetWindow_->getSize() / 2u);
 
@@ -58,7 +62,6 @@ MainMenuState::MainMenuState(std::shared_ptr<sf::RenderWindow> targetWindow, Gam
 
 void MainMenuState::updateFromInput(const float dt) {
     checkForGameQuit();
-
     updateMousePos();
 
     for(auto& button : buttons_) {
