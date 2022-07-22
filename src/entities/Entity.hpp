@@ -17,6 +17,7 @@ class Entity {
         std::unique_ptr<EntityControlComponent> input_;
         std::unique_ptr<PhysicsComponent> physics_;
         std::unique_ptr<GraphicsComponent> graphics_;
+        MapLayer layer_ = MapLayer::ENTITY;
 
         void playAnim(float dt);
 };

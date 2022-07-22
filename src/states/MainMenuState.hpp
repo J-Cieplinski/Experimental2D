@@ -1,3 +1,4 @@
+#pragma once
 #include "State.hpp"
 #include "../gui/Button.hpp"
 

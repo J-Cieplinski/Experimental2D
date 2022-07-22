@@ -1,3 +1,4 @@
+#pragma once
 #include "State.hpp"
 #include "../entities/Entity.hpp"
 class GameState : public State {

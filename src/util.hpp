@@ -22,6 +22,16 @@ enum class EntityState {
     ATTACKING
 };
 
+enum class MapLayer {
+    BACKGROUND,
+    ENTITY,
+    FOREGROUND
+};
+
+inline bool operator<(MapLayer left, MapLayer right) {
+    return static_cast<int>(left) < static_cast<int>(right);
+};
+
 // Linear interpolation function. Works for vectors
 template <typename T, typename U>
 T lerp(T start, T end, U t) {

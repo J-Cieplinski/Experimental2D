@@ -13,5 +13,5 @@ find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
 
 add_executable(Experimental2D src/main.cpp src/entities/Entity.cpp src/Game.cpp src/states/State.cpp src/states/GameState.cpp src/states/PausedState.cpp src/states/MainMenuState.cpp
                 src/states/SettingsMenuState.cpp src/states/EditorState.cpp src/components/EntityControlComponent.cpp src/components/PhysicsComponent.cpp src/components/GraphicsComponent.cpp
-                src/components/PlayerControlComponent.cpp src/gui/Button.cpp src/gui/DropdownList.cpp src/components/AnimationComponent.cpp)
+                src/components/PlayerControlComponent.cpp src/gui/Button.cpp src/gui/DropdownList.cpp src/components/AnimationComponent.cpp src/map/Tile.cpp src/map/TileMap.cpp)
 target_link_libraries(Experimental2D sfml-graphics)
