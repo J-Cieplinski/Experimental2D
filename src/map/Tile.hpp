@@ -10,7 +10,10 @@ class Tile {
 
     public:
         const sf::Vector2f& getPosition() const;
+        const MapLayer getLayer() const;
         friend bool operator<(const Tile& left, const Tile& right) {
             return left.layer_ < right.layer_;
         };
+
+        virtual void render(sf::RenderWindow* targetWindow) = 0;
 };
