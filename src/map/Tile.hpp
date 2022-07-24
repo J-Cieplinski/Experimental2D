@@ -15,5 +15,5 @@ class Tile {
             return left.layer_ < right.layer_;
         };
 
-        virtual void render(sf::RenderWindow* targetWindow) = 0;
+        virtual void render(sf::RenderTarget& target) = 0;
 };

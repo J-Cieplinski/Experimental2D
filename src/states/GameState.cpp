@@ -29,7 +29,9 @@ void GameState::update(const float dt) {
 void GameState::render(sf::RenderTarget* target) {
     target = target ? target : targetWindow_.get();
     target->clear(sf::Color::Red);
+    map_.render(*target);
     player_.render(*target);
+    map_.defferedRender(*target);
 }
 
 void GameState::cleanup() {

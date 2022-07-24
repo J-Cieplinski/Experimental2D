@@ -3,40 +3,26 @@
 #include "TileMap.hpp"
 
 TileMap::TileMap(){
-    unsigned int maxX = 50000;
-    unsigned int maxY = 50000;
+    constexpr unsigned int maxX = 5000;
+    constexpr unsigned int maxY = 5000;
 
-    tiles_.reserve(maxX);
-    for(auto& tile : tiles_) {
-        tile.reserve(maxY);
-    }
+    tiles_.reserve(maxX*maxY);
 
     //Sort so that all of the tiles are in their render order
-    for(auto& tilesY : tiles_) {
-        std::sort(tilesY.begin(), tilesY.end());
-    }
+    sortTiles();
+    updateDeffered();
+}
 
-    for(const auto& tilesY : tiles_) {
-        for(const auto tile : tilesY) {
-            if(tile->getLayer() == MapLayer::FOREGROUND) {
-                renderDefferedTiles_.push_back(tile);
-            }
+void TileMap::render(sf::RenderTarget& target) {
+    for(const auto& tile : tiles_) {
+        if(tile->getLayer() == MapLayer::FOREGROUND) {
+            break;  //because we sort so that all foreground tiles are last ones in vector
         }
+        tile->render(target);
     }
 }
 
-void TileMap::render(sf::RenderWindow* target) {
-    for(const auto& tilesY : tiles_) {
-        for(const auto tile : tilesY) {
-            if(tile->getLayer() == MapLayer::FOREGROUND) {
-                break;  //because we sort so that all foreground tiles are last ones in vector
-            }
-            tile->render(target);
-        }
-    }
-}
-
-void TileMap::defferedRender(sf::RenderWindow* target) {
+void TileMap::defferedRender(sf::RenderTarget& target) {
     for(const auto& tile : renderDefferedTiles_) {
         tile->render(target);
     }
@@ -48,4 +34,30 @@ void TileMap::loadMap() {
 
 void TileMap::saveMap() {
 
+}
+
+void TileMap::addTile(Tile* tile) {
+    tiles_.push_back(tile);
+    if(tile->getLayer() == MapLayer::FOREGROUND) {
+        renderDefferedTiles_.insert(tile);
+    }
+    sortTiles();
+}
+
+void TileMap::removeTile(Tile* tile) {
+    std::erase(tiles_, tile);
+    renderDefferedTiles_.erase(tile);
+}
+
+void TileMap::updateDeffered() {
+    for(const auto& tile : tiles_) {
+        if(tile->getLayer() == MapLayer::FOREGROUND) {
+            renderDefferedTiles_.insert(tile);
+        }
+    }
+}
+
+void TileMap::sortTiles() {
+    std::sort(tiles_.begin(), tiles_.end());
+    isSorted_ = true;
 }

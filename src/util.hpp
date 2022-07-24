@@ -29,7 +29,7 @@ enum class MapLayer {
 };
 
 inline bool operator<(MapLayer left, MapLayer right) {
-    return static_cast<int>(left) < static_cast<int>(right);
+    return static_cast<std::underlying_type<MapLayer>::type>(left) < static_cast<std::underlying_type<MapLayer>::type>(right);
 };
 
 // Linear interpolation function. Works for vectors

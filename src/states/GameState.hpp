@@ -1,6 +1,8 @@
 #pragma once
 #include "State.hpp"
 #include "../entities/Entity.hpp"
+#include "../map/TileMap.hpp"
+
 class GameState : public State {
     public:
         GameState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game);
@@ -11,6 +13,7 @@ class GameState : public State {
         void cleanup() override;
     private:
         Entity player_;
+        TileMap map_;
 
         void initPlayer();
 };
