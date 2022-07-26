@@ -2,13 +2,24 @@
 #include "SFML/Graphics.hpp"
 #include "../util.hpp"
 
+struct TileData {
+    TileData(sf::Texture& text) : texture(text) {};
+    sf::Texture& texture;
+    sf::Vector2f size;
+    sf::Vector2f position;
+    sf::IntRect textureRect;
+    MapLayer layer;
+};
+
 class Tile {
-    private:
+    protected:
         sf::Sprite tile_;
-        bool isCollidable_;
+        bool isCollidable_ {false};
         MapLayer layer_;
 
     public:
+        Tile(const TileData& tileData);
+        virtual ~Tile() {};
         const sf::Vector2f& getPosition() const;
         const MapLayer getLayer() const;
         friend bool operator<(const Tile& left, const Tile& right) {
