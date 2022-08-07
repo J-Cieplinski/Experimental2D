@@ -1,4 +1,6 @@
 #include <algorithm>
+#include <fstream>
+#include <cassert>
 #include "Tile.hpp"
 #include "TileMap.hpp"
 
@@ -9,7 +11,7 @@ TileMap::TileMap(){
 
     tiles_.reserve(maxX*maxY);
 
-    //Sort so that all of the tiles are in their render order
+    //Sort so that all the tiles are in their render order
     sortTiles();
     updateDeffered();
 }
@@ -38,7 +40,21 @@ void TileMap::loadMap() {
 }
 
 void TileMap::saveMap() {
-
+    //TODO: Finish this
+    std::ofstream map("map", std::ios::binary);
+    map.write(texturePath.c_str(), sizeof(texturePath.c_str()));
+    struct TileData {
+        sf::Vector2f size;
+        sf::Vector2f position;
+        sf::IntRect textureRect;
+        MapLayer layer;
+    };
+    for(const auto& tile : tiles_) {
+        TileData data;
+        data.layer = tile->getLayer();
+        data.position = tile->getPosition();
+        data.size = tile-
+    }
 }
 
 void TileMap::addTile(Tile* tile) {
@@ -72,4 +88,9 @@ void TileMap::sortTiles() {
         return *lhs < *rhs;
     });
     isSorted_ = true;
+}
+
+void TileMap::loadTexture(const char *filePath) {
+    texturePath = filePath;
+    assert(tilesTexture_.loadFromFile(texturePath));
 }

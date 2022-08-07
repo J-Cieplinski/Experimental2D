@@ -15,7 +15,7 @@ GameState::GameState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
     initPlayer();
 
     //TODO: Testing code
-    assert(map_.getTilesTexture().loadFromFile("assets/textures/tiles/tilesheet3.png"));
+    map_.loadTexture("assets/textures/tiles/tilesheet3.png");
     TileData data(map_.getTilesTexture());
     data.size = {64, 64};
     data.layer = MapLayer::BACKGROUND;
