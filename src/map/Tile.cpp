@@ -15,3 +15,7 @@ const sf::Vector2f& Tile::getPosition() const {
 const MapLayer Tile::getLayer() const {
     return layer_;
 }
+
+const sf::IntRect& Tile::getIntRect() const {
+    return tile_.getTextureRect();
+}

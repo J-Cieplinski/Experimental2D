@@ -3,6 +3,7 @@
 #include <cassert>
 #include "Tile.hpp"
 #include "TileMap.hpp"
+#include "NormalTile.hpp"
 
 TileMap::TileMap(){
     constexpr unsigned int maxX = 100;
@@ -35,26 +36,47 @@ void TileMap::defferedRender(sf::RenderTarget& target) {
     }
 }
 
-void TileMap::loadMap() {
+struct TileSaveData {
+    char texturePath[100];
+    sf::Vector2f position;
+    sf::IntRect textureRect;
+    MapLayer layer;
+};
 
+void TileMap::loadMap() {
+    std::ifstream map("map.bin", std::ios::binary);
+
+    std::vector<TileSaveData> mapTiles;
+    while(true) {
+        TileSaveData data;
+        map.read(reinterpret_cast<char*>(&data), sizeof(TileSaveData));
+        if(map.eof()) break;
+        mapTiles.push_back(data);
+    }
+
+    texturePath_ = mapTiles[0].texturePath;
+    assert(tilesTexture_.loadFromFile(texturePath_));
+    for(const auto& savedTile : mapTiles) {
+        TileData tile(tilesTexture_);
+        tile.layer = savedTile.layer;
+        tile.textureRect = savedTile.textureRect;
+        tile.position = savedTile.position;
+        addTile(new NormalTile(tile));
+    }
 }
 
 void TileMap::saveMap() {
-    //TODO: Finish this
-    std::ofstream map("map", std::ios::binary);
-    map.write(texturePath.c_str(), sizeof(texturePath.c_str()));
-    struct TileData {
-        sf::Vector2f size;
-        sf::Vector2f position;
-        sf::IntRect textureRect;
-        MapLayer layer;
-    };
+    std::ofstream map("map.bin", std::ios::binary);
+    TileSaveData data;
+    strcpy_s(data.texturePath, texturePath_.c_str());
+
     for(const auto& tile : tiles_) {
-        TileData data;
         data.layer = tile->getLayer();
         data.position = tile->getPosition();
-        data.size = tile-
+        data.textureRect = tile->getIntRect();
+        map.write(reinterpret_cast<char*>(&data), sizeof(TileSaveData));
     }
+    map.close();
 }
 
 void TileMap::addTile(Tile* tile) {
@@ -91,6 +113,6 @@ void TileMap::sortTiles() {
 }
 
 void TileMap::loadTexture(const char *filePath) {
-    texturePath = filePath;
-    assert(tilesTexture_.loadFromFile(texturePath));
+    texturePath_ = filePath;
+    assert(tilesTexture_.loadFromFile(texturePath_));
 }

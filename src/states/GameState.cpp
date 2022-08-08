@@ -15,22 +15,24 @@ GameState::GameState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
     initPlayer();
 
     //TODO: Testing code
-    map_.loadTexture("assets/textures/tiles/tilesheet3.png");
-    TileData data(map_.getTilesTexture());
-    data.size = {64, 64};
-    data.layer = MapLayer::BACKGROUND;
-    data.position = sf::Vector2f(targetWindow_->getSize()) / 2.f;
-    data.textureRect = {0, 0, 64, 64};
-
-    Tile* tile = new NormalTile(data);
-    map_.addTile(tile);
-
-    data.layer = MapLayer::FOREGROUND;
-    data.position = sf::Vector2f(targetWindow_->getSize()) / 2.f + sf::Vector2f{64, 0};
-    data.textureRect = {0, 64, 64, 64};
-
-    tile = new NormalTile(data);
-    map_.addTile(tile);
+//    map_.loadTexture("assets/textures/tiles/tilesheet3.png");
+//    TileData data(map_.getTilesTexture());
+//    data.size = {64, 64};
+//    data.layer = MapLayer::BACKGROUND;
+//    data.position = sf::Vector2f(targetWindow_->getSize()) / 2.f;
+//    data.textureRect = {0, 0, 64, 64};
+//
+//    Tile* tile = new NormalTile(data);
+//    map_.addTile(tile);
+//
+//    data.layer = MapLayer::FOREGROUND;
+//    data.position = sf::Vector2f(targetWindow_->getSize()) / 2.f + sf::Vector2f{64, 0};
+//    data.textureRect = {0, 64, 64, 64};
+//
+//    tile = new NormalTile(data);
+//    map_.addTile(tile);
+//    map_.saveMap();
+    map_.loadMap();
 }
 
 void GameState::updateFromInput(const float dt) {

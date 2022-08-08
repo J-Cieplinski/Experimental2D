@@ -13,7 +13,7 @@ using json = nlohmann::json;
 
 void MainMenuState::initButtons() {
     std::map<std::string, std::function<void()>> mainMenuFunc;
-    mainMenuFunc["Start"] = [&]() { game_->changeState(States::GAME, std::make_unique<GameState>(targetWindow_, game_)); };
+    mainMenuFunc["Start"] = [&]() { game_->changeState(States::GAME, std::make_unique<GameState>(targetWindow_, game_)); }; //TODO: This is creating new state even if one exists and discarding it. Need to change it so we dont allocate unnecessarily
     mainMenuFunc["Settings"] = [&]() { game_->pushState(States::SETTINGS, std::make_unique<SettingsMenuState>(targetWindow_, game_, backgroundImage_, font_));  };
     mainMenuFunc["Exit"] = [&]() { quit_ = true; };
     mainMenuFunc["Editor"] = [&]() {

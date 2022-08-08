@@ -10,7 +10,7 @@ class TileMap {
         std::vector<std::shared_ptr<Tile>> tiles_;
         std::set<std::shared_ptr<Tile>> renderDefferedTiles_;
         sf::Texture tilesTexture_;
-        std::string texturePath;
+        std::string texturePath_;
         unsigned int gridSize_;
         bool isSorted_ {false};
     public:

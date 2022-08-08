@@ -21,6 +21,7 @@ class Tile {
         Tile(const TileData& tileData);
         virtual ~Tile() {};
         const sf::Vector2f& getPosition() const;
+        const sf::IntRect & getIntRect() const;
         const MapLayer getLayer() const;
         friend bool operator<(const Tile& left, const Tile& right) {
             return left.layer_ < right.layer_;
