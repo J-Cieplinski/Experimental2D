@@ -37,7 +37,6 @@ void TileMap::defferedRender(sf::RenderTarget& target) {
 }
 
 struct TileSaveData {
-    char texturePath[100];
     sf::Vector2f position;
     sf::IntRect textureRect;
     MapLayer layer;
@@ -47,6 +46,14 @@ void TileMap::loadMap() {
     std::ifstream map("map.bin", std::ios::binary);
 
     std::vector<TileSaveData> mapTiles;
+    unsigned int len {0};
+    map.read(reinterpret_cast<char*>(&len), sizeof(unsigned int));
+    auto temp = new char[len + 1];
+    map.read(temp, len);
+    temp[len] = '\0';
+    texturePath_ = temp;
+    delete[] temp;
+
     while(true) {
         TileSaveData data;
         map.read(reinterpret_cast<char*>(&data), sizeof(TileSaveData));
@@ -54,7 +61,6 @@ void TileMap::loadMap() {
         mapTiles.push_back(data);
     }
 
-    texturePath_ = mapTiles[0].texturePath;
     assert(tilesTexture_.loadFromFile(texturePath_));
     for(const auto& savedTile : mapTiles) {
         TileData tile(tilesTexture_);
@@ -67,10 +73,12 @@ void TileMap::loadMap() {
 
 void TileMap::saveMap() {
     std::ofstream map("map.bin", std::ios::binary);
-    TileSaveData data;
-    strcpy_s(data.texturePath, texturePath_.c_str());
+    unsigned int len = texturePath_.length();
+    map.write(reinterpret_cast<char*>(&len), sizeof(unsigned int));
+    map.write(texturePath_.c_str(), len);
 
     for(const auto& tile : tiles_) {
+        TileSaveData data;
         data.layer = tile->getLayer();
         data.position = tile->getPosition();
         data.textureRect = tile->getIntRect();
