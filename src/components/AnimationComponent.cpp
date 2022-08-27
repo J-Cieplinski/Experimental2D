@@ -43,7 +43,7 @@ AnimationComponent::AnimationComponent(sf::Sprite& sprite)
 
 }
 
-void AnimationComponent::addTextureSheet(sf::Texture&& textureSheet, const sf::Vector2f& scale) {
+void AnimationComponent::addTextureSheet(sf::Texture& textureSheet, const sf::Vector2f& scale) {
     textureSheet_ = textureSheet;
     sprite_.setTexture(textureSheet_, true);
     sprite_.setScale(scale);

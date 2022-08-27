@@ -33,7 +33,7 @@ class AnimationComponent {
     public:
         AnimationComponent(sf::Sprite& sprite, sf::Texture&& textureSheet);
         AnimationComponent(sf::Sprite& sprite);
-        void addTextureSheet(sf::Texture&& textureSheet, const sf::Vector2f& scale = {1, 1});
+        void addTextureSheet(sf::Texture& textureSheet, const sf::Vector2f& scale = {1, 1});
 
         void play(EntityState key, const float dt);
         void addAnimation(EntityState key, int frameWidth, int frameHeight, float animationTime,

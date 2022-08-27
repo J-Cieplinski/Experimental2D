@@ -4,8 +4,11 @@
 #include <memory>
 #include <stack>
 #include "util.hpp"
+#include "AssetsManager.hpp"
 
 class State;
+using TextureManager = AssetsManager<Textures, sf::Texture>;
+using FontsManager = AssetsManager<Fonts, sf::Font>;
 
 class Game {
     public:
@@ -14,10 +17,12 @@ class Game {
         ~Game();
 
         void changeState(States stateId, std::unique_ptr<State> state = nullptr);
-        void pushState(States stateId, std::unique_ptr<State> state = nullptr);
+        void pushState(States stateId);
         void quitState(States stateId);
         void pauseAllStates();
         const std::string& getTitle() const;
+        template <typename Type>
+        Type& getAssetsManager();
 
         sf::Event event_;
     private:
@@ -27,6 +32,8 @@ class Game {
 
         std::map<States, std::unique_ptr<State>> states_;
         State* currentState_;
+        TextureManager textureManager_;
+        FontsManager fontsManager_;
 
         std::string title_;
 
@@ -37,4 +44,7 @@ class Game {
 
         void initStates();
         void initWindow();
+        void initResources();
+
+        std::unique_ptr<State> createState(States state);
 };

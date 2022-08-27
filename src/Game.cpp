@@ -1,8 +1,11 @@
 #include "Game.hpp"
 #include "states/MainMenuState.hpp"
 #include "../dependencies/nlohmann/json.hpp"
+#include "states/GameState.hpp"
+#include "states/PausedState.hpp"
+#include "states/SettingsMenuState.hpp"
+#include "states/EditorState.hpp"
 #include <fstream>
-#include <iostream>
 
 using json = nlohmann::json;
 
@@ -37,6 +40,7 @@ void Game::run() {
 
 Game::Game() {
     initWindow();
+    initResources();
     initStates();
 }
 
@@ -65,15 +69,15 @@ void Game::changeState(States stateId, std::unique_ptr<State> state) {
     currentState_->unpause();
 }
 
-void Game::pushState(States stateId, std::unique_ptr<State> state) {
+void Game::pushState(States stateId) {
     // pause current state
 	if (currentState_) {
 		currentState_->pause();
 	}
 
-	// store the new state if not existing
+	// create the new state if not existing
     if(!states_[stateId]) {
-        states_[stateId] = std::move(state);
+        states_[stateId] = createState(stateId);
     }
 
     // set current state and unpause
@@ -136,4 +140,37 @@ void Game::render() {
     }
 
     window_->display();
+}
+
+template<>
+TextureManager &Game::getAssetsManager() {
+    return textureManager_;
+}
+
+template<>
+FontsManager &Game::getAssetsManager() {
+    return fontsManager_;
+}
+
+std::unique_ptr<State> Game::createState(States state) {
+    switch (state) {
+        case States::GAME:
+            return std::make_unique<GameState>(window_, this);
+        case States::PAUSED:
+            return std::make_unique<PausedState>(window_, this);
+        case States::MENU:
+            return std::make_unique<MainMenuState>(window_, this);
+        case States::SETTINGS:
+            return std::make_unique<SettingsMenuState>(window_, this);
+        case States::EDITOR:
+            return std::make_unique<EditorState>(window_, this);
+        default:
+            return nullptr;
+    }
+}
+
+void Game::initResources() {
+    textureManager_.loadAsset("assets/textures/characters/PC/Template_Male.png", Textures::PLAYER);
+    fontsManager_.loadAsset("assets/fonts/LeagueGothic.ttf", Fonts::MAIN);
+    textureManager_.loadAsset("assets/textures/mainMenu/background.png", Textures::BACKGROUND);
 }

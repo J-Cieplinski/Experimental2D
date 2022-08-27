@@ -5,8 +5,10 @@
 #include "../Game.hpp"
 #include "MainMenuState.hpp"
 
-SettingsMenuState::SettingsMenuState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game, const sf::Texture& backgroundImage, const sf::Font& font)
-    : State(targetWindow, game), font_(font), backgroundImage_(backgroundImage) {
+SettingsMenuState::SettingsMenuState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
+    : State(targetWindow, game) {
+        auto& font = game_->getAssetsManager<FontsManager>().getAsset(Fonts::MAIN);
+        auto& backgroundImage = game_->getAssetsManager<TextureManager>().getAsset(Textures::BACKGROUND);
         background_.setSize(sf::Vector2f(targetWindow->getSize()));
         background_.setTexture(&backgroundImage);
 
@@ -37,7 +39,7 @@ SettingsMenuState::SettingsMenuState(std::shared_ptr<sf::RenderWindow> targetWin
                 charSize = settings["charSize"];
             }
 
-            buttons_.push_back(std::make_unique<gui::Button>(*this, size, halfWindow + sf::Vector2f(offset["x"], offset["y"]), name, font_, charSize, settingsMenuFunc.at(name)));
+            buttons_.push_back(std::make_unique<gui::Button>(*this, size, halfWindow + sf::Vector2f(offset["x"], offset["y"]), name, font, charSize, settingsMenuFunc.at(name)));
          }
 
         for(auto& listItem : settings["lists"]) {
@@ -64,7 +66,7 @@ SettingsMenuState::SettingsMenuState(std::shared_ptr<sf::RenderWindow> targetWin
                 };
             }
 
-            buttons_.push_back(std::make_unique<gui::DropdownList>(*this, listItem, font_, funcs));
+            buttons_.push_back(std::make_unique<gui::DropdownList>(*this, listItem, font, funcs));
         }
         for(auto& button : buttons_) {
             addObserver(button.get());

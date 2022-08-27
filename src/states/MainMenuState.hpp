@@ -14,8 +14,6 @@ class MainMenuState : public State {
         private:
         using ComponentPtr = std::unique_ptr<gui::Component>;
         std::vector<ComponentPtr> buttons_;
-        sf::Font font_;
-        sf::Texture backgroundImage_;
         sf::RectangleShape background_;
 
         void initButtons();

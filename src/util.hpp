@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include <sstream>
 
 enum class States {
     GAME,
@@ -28,8 +29,44 @@ enum class MapLayer {
     FOREGROUND
 };
 
+enum class Textures {
+    PLAYER,
+    BACKGROUND
+};
+
+enum class Fonts {
+    MAIN
+};
+
 inline bool operator<(MapLayer left, MapLayer right) {
     return static_cast<std::underlying_type<MapLayer>::type>(left) < static_cast<std::underlying_type<MapLayer>::type>(right);
+};
+
+inline std::string operator<<(const std::string& left, Textures right) {
+    std::stringstream ss;
+    ss << left;
+    switch(right) {
+        case Textures::PLAYER:
+            ss << "Textures::PLAYER";
+            break;
+        case Textures::BACKGROUND:
+            ss << "Textures::BACKGROUND";
+            break;
+    }
+
+    return ss.str();
+};
+
+inline std::string operator<<(const std::string& left, Fonts right) {
+    std::stringstream ss;
+    ss << left;
+    switch(right) {
+        case Fonts::MAIN:
+            ss << "Fonts::MAIN";
+            break;
+    }
+
+    return ss.str();
 };
 
 // Linear interpolation function. Works for vectors

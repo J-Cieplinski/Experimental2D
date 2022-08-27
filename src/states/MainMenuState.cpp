@@ -12,13 +12,19 @@
 using json = nlohmann::json;
 
 void MainMenuState::initButtons() {
+    auto& font = game_->getAssetsManager<FontsManager>().getAsset(Fonts::MAIN);
     std::map<std::string, std::function<void()>> mainMenuFunc;
-    mainMenuFunc["Start"] = [&]() { game_->changeState(States::GAME, std::make_unique<GameState>(targetWindow_, game_)); }; //TODO: This is creating new state even if one exists and discarding it. Need to change it so we dont allocate unnecessarily
-    mainMenuFunc["Settings"] = [&]() { game_->pushState(States::SETTINGS, std::make_unique<SettingsMenuState>(targetWindow_, game_, backgroundImage_, font_));  };
+    mainMenuFunc["Start"] = [&]() {
+        game_->changeState(States::GAME,
+                           std::make_unique<GameState>(targetWindow_, game_));
+    }; //TODO: This is creating new state even if one exists and discarding it. Need to change it so we dont allocate unnecessarily
+    mainMenuFunc["Settings"] = [&]() {
+        game_->pushState(States::SETTINGS);
+    };
     mainMenuFunc["Exit"] = [&]() { quit_ = true; };
     mainMenuFunc["Editor"] = [&]() {
         game_->quitState(States::GAME);
-        game_->pushState(States::EDITOR, std::make_unique<EditorState>(targetWindow_, game_));
+        game_->pushState(States::EDITOR);
     };
 
     auto halfWindow = sf::Vector2f(targetWindow_->getSize() / 2u);
@@ -44,7 +50,9 @@ void MainMenuState::initButtons() {
             charSize = mainMenu["charSize"];
         }
 
-        buttons_.push_back(std::make_unique<gui::Button>(*this, size, halfWindow + sf::Vector2f(offset["x"], offset["y"]), name, font_, charSize, mainMenuFunc.at(name)));\
+        buttons_.push_back(std::make_unique<gui::Button>(*this, size,
+                                                         halfWindow + sf::Vector2f(offset["x"], offset["y"]),
+                                                         name, font, charSize, mainMenuFunc.at(name)));
         auto& addedButton = buttons_.back();
         addObserver(addedButton.get());
     }
@@ -52,11 +60,9 @@ void MainMenuState::initButtons() {
 
 MainMenuState::MainMenuState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
     : State(targetWindow, game) {
-        assert(font_.loadFromFile("assets/fonts/LeagueGothic.ttf"));
-
-        assert(backgroundImage_.loadFromFile("assets/textures/mainMenu/background.png"));
+        auto& backgroundImage = game->getAssetsManager<TextureManager>().getAsset(Textures::BACKGROUND);
         background_.setSize(sf::Vector2f(targetWindow->getSize()));
-        background_.setTexture(&backgroundImage_);
+        background_.setTexture(&backgroundImage);
 
         initButtons();
 }

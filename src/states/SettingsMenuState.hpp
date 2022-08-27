@@ -5,7 +5,7 @@
 
 class SettingsMenuState : public State {
     public:
-        SettingsMenuState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game, const sf::Texture& backgroundImage, const sf::Font& font);
+        SettingsMenuState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game);
 
         void updateFromInput(const float dt) override;
         void update(const float dt) override;
@@ -14,6 +14,5 @@ class SettingsMenuState : public State {
     private:
         std::vector<std::unique_ptr<gui::Component>> buttons_;
         sf::Font font_;
-        sf::Texture backgroundImage_;
         sf::RectangleShape background_;
 };

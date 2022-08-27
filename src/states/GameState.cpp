@@ -13,32 +13,13 @@ GameState::GameState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
     : State(targetWindow, game)
 {
     initPlayer();
-
-    //TODO: Testing code
-//    map_.loadTexture("assets/textures/tiles/tilesheet3.png");
-//    TileData data(map_.getTilesTexture());
-//    data.size = {64, 64};
-//    data.layer = MapLayer::BACKGROUND;
-//    data.position = sf::Vector2f(targetWindow_->getSize()) / 2.f;
-//    data.textureRect = {0, 0, 64, 64};
-//
-//    Tile* tile = new NormalTile(data);
-//    map_.addTile(tile);
-//
-//    data.layer = MapLayer::FOREGROUND;
-//    data.position = sf::Vector2f(targetWindow_->getSize()) / 2.f + sf::Vector2f{64, 0};
-//    data.textureRect = {0, 64, 64, 64};
-//
-//    tile = new NormalTile(data);
-//    map_.addTile(tile);
-//    map_.saveMap();
     map_.loadMap();
 }
 
 void GameState::updateFromInput(const float dt) {
     checkForGameQuit();
     if(sf::Keyboard::isKeyPressed(keybinds_["BACK"])) {
-        game_->pushState(States::MENU, std::make_unique<MainMenuState>(targetWindow_, game_));
+        game_->pushState(States::MENU);
     }
 }
 
@@ -60,12 +41,11 @@ void GameState::cleanup() {
 }
 
 void GameState::initPlayer() {
-    sf::Texture pcTexture;
-    assert(pcTexture.loadFromFile("assets/textures/characters/PC/Template_Male.png"));
+    auto& textureManager = game_->getAssetsManager<TextureManager>();
 
     auto playerGraphics = new GraphicsComponent();
     auto& animComponent = playerGraphics->getAnimationComponent();
-    animComponent.addTextureSheet(std::move(pcTexture), {2, 2});
+    animComponent.addTextureSheet(textureManager.getAsset(Textures::PLAYER), {2, 2});
 
     animComponent.addAnimation(EntityState::IDLE, 128, 128, 5, 0, 0, 0, 0);
     animComponent.addAnimation(EntityState::MOVING_RIGHT, 128, 128, 16, 3, 0, 0, 2);

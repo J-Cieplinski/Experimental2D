@@ -16,7 +16,7 @@ EditorState::EditorState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* g
 void EditorState::updateFromInput(const float dt) {
     checkForGameQuit();
     if(sf::Keyboard::isKeyPressed(keybinds_["BACK"])) {
-        game_->pushState(States::MENU, std::make_unique<MainMenuState>(targetWindow_, game_));
+        game_->pushState(States::MENU);
     }
 }
 

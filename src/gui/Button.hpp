@@ -17,7 +17,6 @@ namespace gui {
             void update(const sf::Vector2i& mousePos) override;
         private:
             sf::RectangleShape buttonArea_;
-            const sf::Font& font_;
             sf::Text text_;
             std::function<void()> buttonCallback_;
 

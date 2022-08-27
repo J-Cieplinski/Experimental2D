@@ -4,13 +4,13 @@
 namespace gui {
 
     Button::Button(State& state, sf::Vector2f size, sf::Vector2f position, const std::string& text, const sf::Font& font, uint8_t characterSize, std::function<void()> function) :
-        Component(state), font_(font), highlightColor_(sf::Color::White), normalColor_({200, 200, 200, 200}), buttonCallback_(std::move(function))
+        Component(state), highlightColor_(sf::Color::White), normalColor_({200, 200, 200, 200}), buttonCallback_(std::move(function))
     {
         buttonArea_.setFillColor(sf::Color::Transparent);
         buttonArea_.setPosition(position);
         buttonArea_.setSize(size);
 
-        text_.setFont(font_);
+        text_.setFont(font);
         text_.setCharacterSize(characterSize);
         text_.setString(text);
         text_.setFillColor(normalColor_);
