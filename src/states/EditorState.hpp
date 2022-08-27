@@ -1,9 +1,12 @@
 #pragma once
 
 #include "State.hpp"
+#include "../map/TileMap.hpp"
 
 namespace gui {
+    class Component;
     class Button;
+    class TileTextureSelector;
 }
 
 class EditorState : public State {
@@ -15,5 +18,8 @@ class EditorState : public State {
         void render(sf::RenderTarget* target = nullptr) override;
         void cleanup() override;
     private:
-        std::vector<gui::Button> buttons_;
+        std::vector<std::shared_ptr<gui::Component>> guiElements_;
+        std::shared_ptr<gui::TileTextureSelector> tilesSelector_;
+        TileMap map_;
+        sf::View mapTilesView_;
 };

@@ -12,7 +12,7 @@ class SettingsMenuState : public State {
         void render(sf::RenderTarget* target = nullptr) override;
         void cleanup() override;
     private:
-        std::vector<std::unique_ptr<gui::Button>> buttons_;
+        std::vector<std::unique_ptr<gui::Component>> buttons_;
         sf::Font font_;
         sf::Texture backgroundImage_;
         sf::RectangleShape background_;

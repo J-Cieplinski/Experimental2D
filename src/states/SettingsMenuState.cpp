@@ -41,8 +41,6 @@ SettingsMenuState::SettingsMenuState(std::shared_ptr<sf::RenderWindow> targetWin
          }
 
         for(auto& listItem : settings["lists"]) {
-            auto size = sf::Vector2f(listItem["width"], listItem["height"]);
-            auto offset = listItem["centerOffset"];
             std::string name = listItem["name"];
 
             std::map<std::string, std::function<void()>> funcs;

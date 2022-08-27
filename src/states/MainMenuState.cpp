@@ -44,8 +44,9 @@ void MainMenuState::initButtons() {
             charSize = mainMenu["charSize"];
         }
 
-        auto& addedButton = buttons_.emplace_back(*this, size, halfWindow + sf::Vector2f(offset["x"], offset["y"]), name, font_, charSize, mainMenuFunc.at(name));
-        addObserver(&addedButton);
+        buttons_.push_back(std::make_unique<gui::Button>(*this, size, halfWindow + sf::Vector2f(offset["x"], offset["y"]), name, font_, charSize, mainMenuFunc.at(name)));\
+        auto& addedButton = buttons_.back();
+        addObserver(addedButton.get());
     }
 }
 
@@ -65,7 +66,7 @@ void MainMenuState::updateFromInput(const float dt) {
     updateMousePos();
 
     for(auto& button : buttons_) {
-        button.update(mouseWindowPos_);
+        button->update(mouseWindowPos_);
     }
 
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
@@ -88,7 +89,7 @@ void MainMenuState::render(sf::RenderTarget* target) {
 
     target->draw(background_);
     for(auto& button : buttons_) {
-        button.render(*target);
+        button->render(*target);
     }
 }
 

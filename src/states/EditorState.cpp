@@ -1,13 +1,16 @@
 #include "EditorState.hpp"
 #include "MainMenuState.hpp"
 #include "../Game.hpp"
-#include "../gui/Button.hpp"
+#include "../gui/TileTextureSelector.hpp"
 
 
 EditorState::EditorState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
     : State(targetWindow, game, "configs/editorKeybinds.json")
 {
-
+    map_.loadMap();
+    tilesSelector_ = std::make_shared<gui::TileTextureSelector>(*this, map_.getTilesTexture(),0,0);
+    guiElements_.push_back(tilesSelector_);
+    mapTilesView_.setSize(200,200);
 }
 
 void EditorState::updateFromInput(const float dt) {
@@ -21,8 +24,8 @@ void EditorState::update(const float dt) {
     updateMousePos();
     updateFromInput(dt);
 
-    for(auto& button : buttons_) {
-        button.update(mouseWindowPos_);
+    for(auto& button : guiElements_) {
+        button->update(mouseWindowPos_);
     }
 
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
@@ -43,9 +46,12 @@ void EditorState::cleanup() {
 
 void EditorState::render(sf::RenderTarget* target) {
     target = target ? target : targetWindow_.get();
-    target->clear(sf::Color::Black);
+    target->clear(sf::Color::Red);
 
-    for(auto& button : buttons_) {
-        button.render(*target);
+    map_.render(*target);
+    map_.defferedRender(*target);
+
+    for(auto& button : guiElements_) {
+        button->render(*target);
     }
 }

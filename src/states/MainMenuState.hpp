@@ -12,7 +12,8 @@ class MainMenuState : public State {
         void cleanup() override;
 
         private:
-        std::vector<gui::Button> buttons_;
+        using ComponentPtr = std::unique_ptr<gui::Component>;
+        std::vector<ComponentPtr> buttons_;
         sf::Font font_;
         sf::Texture backgroundImage_;
         sf::RectangleShape background_;
