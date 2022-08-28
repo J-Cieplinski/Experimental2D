@@ -2,19 +2,22 @@
 #include <vector>
 #include <set>
 #include "SFML/Graphics.hpp"
+#include "../Game.hpp"
 
 class Tile;
+
 
 class TileMap {
     private:
         std::vector<std::shared_ptr<Tile>> tiles_;
         std::set<std::shared_ptr<Tile>> renderDefferedTiles_;
-        sf::Texture tilesTexture_;
+        sf::Texture* tilesTexture_;
+        TextureManager& textureManager_;
         std::string texturePath_;
         unsigned int gridSize_;
         bool isSorted_ {false};
     public:
-        TileMap();
+        TileMap(TextureManager& textureManager);
 
         sf::Texture& getTilesTexture();
         void loadTexture(const char* filePath);

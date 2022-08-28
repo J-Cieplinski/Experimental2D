@@ -31,7 +31,8 @@ enum class MapLayer {
 
 enum class Textures {
     PLAYER,
-    BACKGROUND
+    BACKGROUND,
+    MAP
 };
 
 enum class Fonts {

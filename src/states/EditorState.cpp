@@ -5,7 +5,8 @@
 
 
 EditorState::EditorState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
-    : State(targetWindow, game, "configs/editorKeybinds.json")
+    : State(targetWindow, game, "configs/editorKeybinds.json"),
+    map_(game_->getAssetsManager<TextureManager>())
 {
     map_.loadMap();
     tilesSelector_ = std::make_shared<gui::TileTextureSelector>(*this, map_.getTilesTexture(),0,0);

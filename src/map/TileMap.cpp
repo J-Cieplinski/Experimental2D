@@ -5,7 +5,7 @@
 #include "TileMap.hpp"
 #include "NormalTile.hpp"
 
-TileMap::TileMap(){
+TileMap::TileMap(TextureManager& textureManager) : textureManager_(textureManager) {
     constexpr unsigned int maxX = 100;
     constexpr unsigned int maxY = 100;
     gridSize_ = 64;
@@ -18,7 +18,7 @@ TileMap::TileMap(){
 }
 
 sf::Texture& TileMap::getTilesTexture() {
-    return tilesTexture_;
+    return *tilesTexture_;
 }
 
 void TileMap::render(sf::RenderTarget& target) {
@@ -51,7 +51,7 @@ void TileMap::loadMap() {
     auto temp = new char[len + 1];
     map.read(temp, len);
     temp[len] = '\0';
-    texturePath_ = temp;
+    loadTexture(temp);
     delete[] temp;
 
     while(true) {
@@ -61,9 +61,8 @@ void TileMap::loadMap() {
         mapTiles.push_back(data);
     }
 
-    assert(tilesTexture_.loadFromFile(texturePath_));
     for(const auto& savedTile : mapTiles) {
-        TileData tile(tilesTexture_);
+        TileData tile(*tilesTexture_);
         tile.layer = savedTile.layer;
         tile.textureRect = savedTile.textureRect;
         tile.position = savedTile.position;
@@ -122,5 +121,6 @@ void TileMap::sortTiles() {
 
 void TileMap::loadTexture(const char *filePath) {
     texturePath_ = filePath;
-    assert(tilesTexture_.loadFromFile(texturePath_));
+    textureManager_.loadAsset(filePath, Textures::MAP);
+    tilesTexture_ = &textureManager_.getAsset(Textures::MAP);
 }

@@ -10,7 +10,7 @@
 #include "../map/NormalTile.hpp"
 
 GameState::GameState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
-    : State(targetWindow, game)
+    : State(targetWindow, game), map_(game_->getAssetsManager<TextureManager>())
 {
     initPlayer();
     map_.loadMap();
