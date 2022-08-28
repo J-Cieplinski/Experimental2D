@@ -16,7 +16,7 @@ class Game {
         Game();
         ~Game();
 
-        void changeState(States stateId, std::unique_ptr<State> state = nullptr);
+        void changeState(States stateId);
         void pushState(States stateId);
         void quitState(States stateId);
         void pauseAllStates();
@@ -45,6 +45,8 @@ class Game {
         void initStates();
         void initWindow();
         void initResources();
+
+        void switchState(States stateId);
 
         std::unique_ptr<State> createState(States state);
 };

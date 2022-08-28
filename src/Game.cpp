@@ -48,7 +48,19 @@ Game::~Game() {
     states_.clear();
 }
 
-void Game::changeState(States stateId, std::unique_ptr<State> state) {
+
+void Game::switchState(States stateId) {
+    // create the new state if not existing
+    if(!states_[stateId]) {
+        states_[stateId] = createState(stateId);
+    }
+
+    // unpause the new state
+    currentState_ = states_[stateId].get();
+    currentState_->unpause();
+}
+
+void Game::changeState(States stateId) {
     // cleanup the current state
 	if (!states_.empty()) {
         currentState_->cleanup();
@@ -59,14 +71,7 @@ void Game::changeState(States stateId, std::unique_ptr<State> state) {
         currentState_ = nullptr;
 	}
 
-    // store the new state if not existing
-    if(!states_[stateId]) {
-        states_[stateId] = std::move(state);
-    }
-
-    // unpause the new state
-    currentState_ = states_[stateId].get();
-    currentState_->unpause();
+    switchState(stateId);
 }
 
 void Game::pushState(States stateId) {
@@ -75,14 +80,7 @@ void Game::pushState(States stateId) {
 		currentState_->pause();
 	}
 
-	// create the new state if not existing
-    if(!states_[stateId]) {
-        states_[stateId] = createState(stateId);
-    }
-
-    // set current state and unpause
-    currentState_ = states_[stateId].get();
-    currentState_->unpause();
+    switchState(stateId);
 }
 
 void Game::quitState(States stateId) {

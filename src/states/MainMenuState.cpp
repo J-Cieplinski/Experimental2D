@@ -15,9 +15,8 @@ void MainMenuState::initButtons() {
     auto& font = game_->getAssetsManager<FontsManager>().getAsset(Fonts::MAIN);
     std::map<std::string, std::function<void()>> mainMenuFunc;
     mainMenuFunc["Start"] = [&]() {
-        game_->changeState(States::GAME,
-                           std::make_unique<GameState>(targetWindow_, game_));
-    }; //TODO: This is creating new state even if one exists and discarding it. Need to change it so we dont allocate unnecessarily
+        game_->changeState(States::GAME);
+    };
     mainMenuFunc["Settings"] = [&]() {
         game_->pushState(States::SETTINGS);
     };
