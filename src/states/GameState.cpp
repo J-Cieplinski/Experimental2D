@@ -1,6 +1,5 @@
 #include "GameState.hpp"
 #include "MainMenuState.hpp"
-#include <cassert>
 #include "../util.hpp"
 #include "../Game.hpp"
 #include "../components/PlayerControlComponent.hpp"

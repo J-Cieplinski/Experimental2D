@@ -3,19 +3,22 @@
 #include <set>
 #include "SFML/Graphics.hpp"
 #include "../Game.hpp"
-
-class Tile;
-
+#include "Tile.hpp"
 
 class TileMap {
     private:
-        std::vector<std::shared_ptr<Tile>> tiles_;
+        struct TileSaveData {
+            sf::Vector2f position;
+            sf::IntRect textureRect;
+            MapLayer layer;
+        };
+
+        std::vector<std::vector<std::shared_ptr<Tile>>> tiles_;
         std::set<std::shared_ptr<Tile>> renderDefferedTiles_;
         sf::Texture* tilesTexture_;
         TextureManager& textureManager_;
         std::string texturePath_;
-        unsigned int gridSize_;
-        bool isSorted_ {false};
+        unsigned int gridSize_ {64};
     public:
         TileMap(TextureManager& textureManager);
 
@@ -25,8 +28,7 @@ class TileMap {
         void defferedRender(sf::RenderTarget& target);
         void loadMap();
         void saveMap();
-        void addTile(Tile* tile);
+        void addTile(const TileData& tile);
         void removeTile(Tile* tile);
-        void sortTiles();
         void updateDeffered();
 };

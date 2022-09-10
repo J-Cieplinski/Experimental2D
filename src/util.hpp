@@ -53,6 +53,9 @@ inline std::string operator<<(const std::string& left, Textures right) {
         case Textures::BACKGROUND:
             ss << "Textures::BACKGROUND";
             break;
+        case Textures::MAP:
+            ss << "Textures::MAP";
+            break;
     }
 
     return ss.str();

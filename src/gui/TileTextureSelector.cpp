@@ -19,7 +19,7 @@ namespace gui {
                                        static_cast<int>(tileSheet_.getGlobalBounds().width),
                                        static_cast<int>(selectorBounds_.getGlobalBounds().height)});
         }
-        tileSheet_.setPosition(x,y);
+        tileSheet_.setPosition(x, y);
     }
 
     void TileTextureSelector::render(sf::RenderTarget &target) {

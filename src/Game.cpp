@@ -1,6 +1,6 @@
 #include "Game.hpp"
-#include "states/MainMenuState.hpp"
 #include "../dependencies/nlohmann/json.hpp"
+#include "states/MainMenuState.hpp"
 #include "states/GameState.hpp"
 #include "states/PausedState.hpp"
 #include "states/SettingsMenuState.hpp"
