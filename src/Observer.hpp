@@ -1,7 +1,7 @@
 #pragma once
-#include "SFML/Graphics.hpp"
 #include "states/State.hpp"
 #include "util.hpp"
+
 
 class Observer {
     public:

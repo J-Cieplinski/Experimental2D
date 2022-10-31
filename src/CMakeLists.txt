@@ -1,0 +1,5 @@
+add_subdirectory(components)
+add_subdirectory(entities)
+add_subdirectory(gui)
+add_subdirectory(map)
+add_subdirectory(states)
