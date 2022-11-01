@@ -22,4 +22,7 @@ class EditorState : public State {
         std::shared_ptr<gui::TileTextureSelector> tilesSelector_;
         TileMap map_;
         sf::View mapTilesView_;
+
+        void notifyObservers(Event event);
+        void placeTile();
 };

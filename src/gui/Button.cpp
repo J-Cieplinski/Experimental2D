@@ -21,7 +21,7 @@ namespace gui {
     }
 
     bool Button::onNotify(Event event, const State& state) {
-        if(event == Event::MOUSE_CLICK && isHovered(state.getMouseWindowPos())) {
+        if(event == Event::MOUSE_LEFT_CLICK && isHovered(state.getMouseWindowPos())) {
             buttonCallback_();
             return true;
         }

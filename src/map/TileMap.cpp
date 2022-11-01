@@ -30,7 +30,7 @@ void TileMap::defferedRender(sf::RenderTarget& target) {
     }
 }
 
-void TileMap::loadMap() {
+void TileMap::loadMap(int maxX, int maxY) {
     std::ifstream map("map.bin", std::ios::binary);
 
     std::vector<TileSaveData> mapTiles;
@@ -42,9 +42,6 @@ void TileMap::loadMap() {
     loadTexture(temp);
     delete[] temp;
 
-    unsigned int maxX {0};
-    unsigned int maxY {0};
-
     while(true) {
         TileSaveData data;
         map.read(reinterpret_cast<char*>(&data), sizeof(TileSaveData));
@@ -54,10 +51,7 @@ void TileMap::loadMap() {
         maxY = data.position.y > maxY ? data.position.y : maxY;
     }
 
-    tiles_.resize(maxX / gridSize_);
-    for(auto& tilesY : tiles_) {
-        tilesY.resize(maxY/gridSize_);
-    }
+    createMap(maxX, maxY);
 
     for(const auto& savedTile : mapTiles) {
         TileData tile(*tilesTexture_);
@@ -76,6 +70,7 @@ void TileMap::saveMap() {
 
     for(const auto& tilesY : tiles_) {
         for(const auto& tile : tilesY) {
+            if(!tile) continue;
             TileSaveData data;
             data.layer = tile->getLayer();
             data.position = tile->getPosition();
@@ -88,7 +83,9 @@ void TileMap::saveMap() {
 
 void TileMap::addTile(const TileData& tile) {
     auto ptr = std::shared_ptr<Tile>(new NormalTile(tile));
-    tiles_[tile.position.x / gridSize_ - 1][tile.position.y / gridSize_ - 1] = ptr;
+    auto indexX = tile.position.x / gridSize_ - 1;
+    auto indexY = tile.position.y / gridSize_ - 1;
+    tiles_[indexX >= 0 ? indexX : 0][indexY >= 0 ? indexY : 0] = ptr;
     if(ptr->getLayer() == MapLayer::FOREGROUND) {
         renderDefferedTiles_.insert(ptr);
     }
@@ -121,4 +118,11 @@ void TileMap::loadTexture(const char *filePath) {
     texturePath_ = filePath;
     textureManager_.loadAsset(filePath, Textures::MAP);
     tilesTexture_ = &textureManager_.getAsset(Textures::MAP);
+}
+
+void TileMap::createMap(int x, int y) {
+    tiles_.resize(x / gridSize_);
+    for(auto& tilesY : tiles_) {
+        tilesY.resize(y / gridSize_);
+    }
 }

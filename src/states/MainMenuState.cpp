@@ -76,7 +76,7 @@ void MainMenuState::updateFromInput(const float dt) {
 
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
         for(const auto& observer : observers_) {
-            observer->onNotify(Event::MOUSE_CLICK, *this);
+            observer->onNotify(Event::MOUSE_LEFT_CLICK, *this);
             if(quitState_) {
                 break;
             }

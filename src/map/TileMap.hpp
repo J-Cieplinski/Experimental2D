@@ -26,7 +26,8 @@ class TileMap {
         void loadTexture(const char* filePath);
         void render(sf::RenderTarget& target);
         void defferedRender(sf::RenderTarget& target);
-        void loadMap();
+        void createMap(int x, int y);
+        void loadMap(int maxX = 0, int maxY = 0);
         void saveMap();
         void addTile(const TileData& tile);
         void removeTile(Tile* tile);

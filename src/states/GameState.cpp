@@ -1,12 +1,6 @@
 #include "GameState.hpp"
 #include "MainMenuState.hpp"
-#include "../util.hpp"
-#include "../Game.hpp"
 #include "../components/PlayerControlComponent.hpp"
-#include "../components/GraphicsComponent.hpp"
-#include "../components/PhysicsComponent.hpp"
-#include "../components/AnimationComponent.hpp"
-#include "../map/NormalTile.hpp"
 
 GameState::GameState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
     : State(targetWindow, game), map_(game_->getAssetsManager<TextureManager>())

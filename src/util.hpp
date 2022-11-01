@@ -11,7 +11,8 @@ enum class States {
 };
 
 enum class Event {
-    MOUSE_CLICK
+    MOUSE_LEFT_CLICK,
+    MOUSE_RIGHT_CLICK
 };
 
 enum class EntityState {
