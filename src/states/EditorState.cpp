@@ -4,7 +4,7 @@
 
 
 EditorState::EditorState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
-    : State(targetWindow, game, "configs/editorKeybinds.json"),
+    : State(targetWindow, game, "configs/editorKeybinds.json"), activeLayer_(MapLayer::FOREGROUND),
     map_(game_->getAssetsManager<TextureManager>())
 {
     map_.loadMap(targetWindow_->getSize().x, targetWindow_->getSize().y);
@@ -12,6 +12,9 @@ EditorState::EditorState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* g
     guiElements_.push_back(tilesSelector_);
     addObserver(tilesSelector_.get());
     mapTilesView_.setSize(200,200);
+
+    layers_.insert({keybinds_["FOREGROUND"], MapLayer::FOREGROUND});
+    layers_.insert({keybinds_["BACKGROUND"], MapLayer::BACKGROUND});
 }
 
 void EditorState::updateFromInput(const float dt) {
@@ -21,6 +24,12 @@ void EditorState::updateFromInput(const float dt) {
     }
     if(sf::Keyboard::isKeyPressed(keybinds_["SAVE"])) {
         map_.saveMap();
+    }
+    if(sf::Keyboard::isKeyPressed(keybinds_["FOREGROUND"])) {
+        activeLayer_ = layers_[keybinds_["FOREGROUND"]];
+    }
+    if(sf::Keyboard::isKeyPressed(keybinds_["BACKGROUND"])) {
+        activeLayer_ = layers_[keybinds_["BACKGROUND"]];
     }
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
         placeTile();
@@ -82,7 +91,7 @@ void EditorState::placeTile() {
 
     TileData data(map_.getTilesTexture());
     data.size = {64, 64};
-    data.layer = MapLayer::BACKGROUND;
+    data.layer = activeLayer_;
     data.position.x = x;
     data.position.y = y;
     data.textureRect = pickedTile;

@@ -2,5 +2,7 @@
     "QUIT": 16,
     "BACK": 36,
     "CONFIRM": 58,
-    "SAVE": 18
+    "SAVE": 18,
+    "FOREGROUND": 5,
+    "BACKGROUND": 1
 }
