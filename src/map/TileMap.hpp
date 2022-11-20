@@ -13,8 +13,7 @@ class TileMap {
             MapLayer layer;
         };
 
-        std::vector<std::vector<std::shared_ptr<Tile>>> tiles_;
-        std::set<std::shared_ptr<Tile>> renderDefferedTiles_;
+        std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> tiles_;
         sf::Texture* tilesTexture_;
         TextureManager& textureManager_;
         std::string texturePath_;
@@ -26,10 +25,9 @@ class TileMap {
         void loadTexture(const char* filePath);
         void render(sf::RenderTarget& target);
         void defferedRender(sf::RenderTarget& target);
-        void createMap(int x, int y);
+        void createMap(int x, int y, int z);
         void loadMap(int maxX = 0, int maxY = 0);
         void saveMap();
         void addTile(const TileData& tile);
         void removeTile(Tile* tile);
-        void updateDeffered();
 };

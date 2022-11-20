@@ -5,8 +5,6 @@
 #include "NormalTile.hpp"
 
 TileMap::TileMap(TextureManager& textureManager) : textureManager_(textureManager) {
-    //Sort so that all the tiles are in their render order
-    updateDeffered();
 }
 
 sf::Texture& TileMap::getTilesTexture() {
@@ -15,23 +13,29 @@ sf::Texture& TileMap::getTilesTexture() {
 
 void TileMap::render(sf::RenderTarget& target) {
     for(const auto& tilesY : tiles_) {
-        for(const auto& tile : tilesY) {
-            if (!tile || tile->getLayer() == MapLayer::FOREGROUND) {
-                continue;
+        for (const auto &tilesZ: tilesY) {
+            for (int i = 0; static_cast<MapLayer>(i) <= MapLayer::ENTITY; ++i) {
+                if(!tilesZ[i]) continue;
+                tilesZ[i]->render(target);
             }
-            tile->render(target);
         }
     }
 }
 
 void TileMap::defferedRender(sf::RenderTarget& target) {
-    for(const auto& tile : renderDefferedTiles_) {
-        tile->render(target);
+    for(const auto& tilesY : tiles_) {
+        for (const auto &tilesZ: tilesY) {
+            for (int i = static_cast<int>(MapLayer::ENTITY); i < tiles_[0][0].size(); ++i) {
+                if(!tilesZ[i]) continue;
+                tilesZ[i]->render(target);
+            }
+        }
     }
 }
 
 void TileMap::loadMap(int maxX, int maxY) {
     std::ifstream map("map.bin", std::ios::binary);
+    int maxZ = static_cast<int>(MapLayer::MAX_LAYERS);
 
     std::vector<TileSaveData> mapTiles;
     unsigned int len {0};
@@ -51,7 +55,7 @@ void TileMap::loadMap(int maxX, int maxY) {
         maxY = data.position.y > maxY ? data.position.y : maxY;
     }
 
-    createMap(maxX, maxY);
+    createMap(maxX, maxY, maxZ);
 
     for(const auto& savedTile : mapTiles) {
         TileData tile(*tilesTexture_);
@@ -68,14 +72,16 @@ void TileMap::saveMap() {
     map.write(reinterpret_cast<char*>(&len), sizeof(unsigned int));
     map.write(texturePath_.c_str(), len);
 
-    for(const auto& tilesY : tiles_) {
-        for(const auto& tile : tilesY) {
-            if(!tile) continue;
-            TileSaveData data;
-            data.layer = tile->getLayer();
-            data.position = tile->getPosition();
-            data.textureRect = tile->getIntRect();
-            map.write(reinterpret_cast<char *>(&data), sizeof(TileSaveData));
+    for(const auto& tilesZ : tiles_) {
+        for (const auto &tilesY: tilesZ) {
+            for (const auto &tile: tilesY) {
+                if (!tile) continue;
+                TileSaveData data;
+                data.layer = tile->getLayer();
+                data.position = tile->getPosition();
+                data.textureRect = tile->getIntRect();
+                map.write(reinterpret_cast<char *>(&data), sizeof(TileSaveData));
+            }
         }
     }
     map.close();
@@ -85,10 +91,8 @@ void TileMap::addTile(const TileData& tile) {
     auto ptr = std::shared_ptr<Tile>(new NormalTile(tile));
     auto indexX = tile.position.x / gridSize_ - 1;
     auto indexY = tile.position.y / gridSize_ - 1;
-    tiles_[indexX >= 0 ? indexX : 0][indexY >= 0 ? indexY : 0] = ptr;
-    if(ptr->getLayer() == MapLayer::FOREGROUND) {
-        renderDefferedTiles_.insert(ptr);
-    }
+    auto indexZ = static_cast<int>(tile.layer);
+    tiles_[indexX >= 0 ? indexX : 0][indexY >= 0 ? indexY : 0][indexZ > 0 ? --indexZ : 0] = ptr;
 }
 
 void TileMap::removeTile(Tile* tile) {
@@ -96,20 +100,10 @@ void TileMap::removeTile(Tile* tile) {
         return el.get() == tile;
     };
 
-    for(auto& tilesY : tiles_) {
-        const unsigned int erased = std::erase_if(tilesY, tileExistInCollection);
-        if(erased) break;
-    }
-    std::erase_if(renderDefferedTiles_, tileExistInCollection);
-}
-
-void TileMap::updateDeffered() {
-    for(const auto& tilesY : tiles_) {
-        for(const auto& tile : tilesY) {
-            if(!tile) continue;
-            if (tile->getLayer() == MapLayer::FOREGROUND) {
-                renderDefferedTiles_.insert(tile);
-            }
+    for(auto& tilesZ : tiles_) {
+        for (auto &tilesY: tilesZ) {
+            const unsigned int erased = std::erase_if(tilesY, tileExistInCollection);
+            if (erased) break;
         }
     }
 }
@@ -120,9 +114,12 @@ void TileMap::loadTexture(const char *filePath) {
     tilesTexture_ = &textureManager_.getAsset(Textures::MAP);
 }
 
-void TileMap::createMap(int x, int y) {
+void TileMap::createMap(int x, int y, int z) {
     tiles_.resize(x / gridSize_);
     for(auto& tilesY : tiles_) {
         tilesY.resize(y / gridSize_);
+        for(auto& tilesZ: tilesY) {
+            tilesZ.resize(z);
+        }
     }
 }

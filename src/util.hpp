@@ -25,9 +25,12 @@ enum class EntityState {
 };
 
 enum class MapLayer {
-    BACKGROUND,
-    ENTITY,
-    FOREGROUND
+    BACKGROUND = 0,
+    BACKGROUND_DECALS = 1,
+    ENTITY = 2,
+    FOREGROUND = 3,
+    FOREGROUND_DECALS = 4,
+    MAX_LAYERS
 };
 
 enum class Textures {
