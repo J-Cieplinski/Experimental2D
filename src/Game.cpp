@@ -48,7 +48,6 @@ Game::~Game() {
     states_.clear();
 }
 
-
 void Game::switchState(States stateId) {
     // create the new state if not existing
     if(!states_[stateId]) {
@@ -123,6 +122,7 @@ void Game::updateEvents() {
         if(event_.type == sf::Event::Closed) {
             window_->close();
         }
+        currentState_->updateFromInput(dt_);
     }
 }
 

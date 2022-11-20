@@ -47,8 +47,7 @@ void EditorState::updateFromInput(const float dt) {
 }
 
 void EditorState::update(const float dt) {
-    updateMousePos();
-    updateFromInput(dt);
+    State::update(dt);
 
     for(auto& button : guiElements_) {
         button->update(mouseWindowPos_);

@@ -20,7 +20,6 @@ void PausedState::update(const float dt) {
     if(paused_ || quit_) {
         return;
     }
-    updateFromInput(dt);
 }
 
 void PausedState::render(sf::RenderTarget* target) {
