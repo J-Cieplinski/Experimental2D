@@ -96,14 +96,15 @@ void TileMap::addTile(const TileData& tile) {
 }
 
 void TileMap::removeTile(Tile* tile) {
-    auto tileExistInCollection = [&](auto& el) {
-        return el.get() == tile;
-    };
-
-    for(auto& tilesZ : tiles_) {
-        for (auto &tilesY: tilesZ) {
-            const unsigned int erased = std::erase_if(tilesY, tileExistInCollection);
-            if (erased) break;
+    for(auto& tilesY : tiles_) {
+        for (auto& tilesZ: tilesY) {
+            for(auto& tileZ : tilesZ)
+            {
+                if(tileZ.get() == tile) {
+                    tileZ.reset();
+                    return;
+                }
+            }
         }
     }
 }
@@ -122,4 +123,10 @@ void TileMap::createMap(int x, int y, int z) {
             tilesZ.resize(z);
         }
     }
+}
+
+Tile *TileMap::getTileAtPos(int x, int y, int z) const {
+    int indexX = x / gridSize_ - 1;
+    int indexY = y / gridSize_ - 1;
+    return tiles_[indexX >= 0 ? indexX : 0][indexY >= 0 ? indexY : 0][z > 0 ? --z : 0].get();
 }

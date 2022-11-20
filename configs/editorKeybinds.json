@@ -3,6 +3,7 @@
     "BACK": 36,
     "CONFIRM": 58,
     "SAVE": 18,
+    "DELETE_MODE": 3,
     "FOREGROUND": 5,
     "BACKGROUND": 1
 }

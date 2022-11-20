@@ -4,17 +4,14 @@
 
 
 EditorState::EditorState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
-    : State(targetWindow, game, "configs/editorKeybinds.json"), activeLayer_(MapLayer::FOREGROUND),
-    map_(game_->getAssetsManager<TextureManager>())
+    : State(targetWindow, game, "configs/editorKeybinds.json"), activeLayer_(static_cast<int>(MapLayer::BACKGROUND)),
+    deleteMode_(false), map_(game_->getAssetsManager<TextureManager>())
 {
     map_.loadMap(targetWindow_->getSize().x, targetWindow_->getSize().y);
     tilesSelector_ = std::make_shared<gui::TileTextureSelector>(*this, map_.getTilesTexture(),0,0);
     guiElements_.push_back(tilesSelector_);
     addObserver(tilesSelector_.get());
     mapTilesView_.setSize(200,200);
-
-    layers_.insert({keybinds_["FOREGROUND"], MapLayer::FOREGROUND});
-    layers_.insert({keybinds_["BACKGROUND"], MapLayer::BACKGROUND});
 }
 
 void EditorState::updateFromInput(const float dt) {
@@ -26,13 +23,20 @@ void EditorState::updateFromInput(const float dt) {
         map_.saveMap();
     }
     if(sf::Keyboard::isKeyPressed(keybinds_["FOREGROUND"])) {
-        activeLayer_ = layers_[keybinds_["FOREGROUND"]];
+       activeLayer_ = std::clamp(++activeLayer_, 0, static_cast<int>(MapLayer::MAX_LAYERS));
     }
     if(sf::Keyboard::isKeyPressed(keybinds_["BACKGROUND"])) {
-        activeLayer_ = layers_[keybinds_["BACKGROUND"]];
+        activeLayer_ = std::clamp(--activeLayer_, 0, static_cast<int>(MapLayer::MAX_LAYERS));
+    }
+    if(sf::Keyboard::isKeyPressed(keybinds_["DELETE_MODE"])) {
+        deleteMode_ = !deleteMode_;
     }
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-        placeTile();
+        if(deleteMode_) {
+            removeTile();
+        } else {
+            placeTile();
+        }
     }
 }
 
@@ -85,15 +89,27 @@ void EditorState::placeTile() {
         return;
     }
 
-    auto mousePos = getMouseWindowPos();
-    int x = mousePos.x / 64 * 64;
-    int y = mousePos.y / 64 * 64;
+    auto [x, y] = getTileCordPosFromMousePos();
 
     TileData data(map_.getTilesTexture());
     data.size = {64, 64};
-    data.layer = activeLayer_;
+    data.layer = static_cast<MapLayer>(activeLayer_);
     data.position.x = x;
     data.position.y = y;
     data.textureRect = pickedTile;
     map_.addTile(data);
+}
+
+void EditorState::removeTile() {
+    auto [x, y] = getTileCordPosFromMousePos();
+
+    map_.removeTile(map_.getTileAtPos(x, y, activeLayer_));
+}
+
+std::pair<int, int> EditorState::getTileCordPosFromMousePos() {
+    auto mousePos = getMouseWindowPos();
+    int x = mousePos.x / 64 * 64;
+    int y = mousePos.y / 64 * 64;
+
+    return {x, y};
 }

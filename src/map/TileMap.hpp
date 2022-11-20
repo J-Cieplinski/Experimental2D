@@ -30,4 +30,5 @@ class TileMap {
         void saveMap();
         void addTile(const TileData& tile);
         void removeTile(Tile* tile);
+        Tile* getTileAtPos(int x, int y, int z) const;
 };

@@ -22,9 +22,11 @@ class EditorState : public State {
         std::shared_ptr<gui::TileTextureSelector> tilesSelector_;
         TileMap map_;
         sf::View mapTilesView_;
-        std::map<int, MapLayer> layers_;
-        MapLayer activeLayer_;
+        int activeLayer_;
+        bool deleteMode_;
 
         void notifyObservers(Event event);
         void placeTile();
+        void removeTile();
+        std::pair<int, int> getTileCordPosFromMousePos();
 };
