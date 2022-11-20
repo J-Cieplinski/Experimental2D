@@ -128,5 +128,5 @@ void TileMap::createMap(int x, int y, int z) {
 Tile *TileMap::getTileAtPos(int x, int y, int z) const {
     int indexX = x / gridSize_ - 1;
     int indexY = y / gridSize_ - 1;
-    return tiles_[indexX >= 0 ? indexX : 0][indexY >= 0 ? indexY : 0][z > 0 ? --z : 0].get();
+    return tiles_[indexX >= 0 ? indexX : 0][indexY >= 0 ? indexY : 0][z].get();
 }

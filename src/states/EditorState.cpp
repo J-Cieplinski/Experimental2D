@@ -19,32 +19,34 @@ EditorState::EditorState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* g
 
 void EditorState::updateFromInput(const float dt) {
     checkForGameQuit();
-    if(sf::Keyboard::isKeyPressed(keybinds_["BACK"])) {
-        game_->pushState(States::MENU);
-    }
-    if(sf::Keyboard::isKeyPressed(keybinds_["SAVE"])) {
-        map_.saveMap();
-    }
 
-    if(game_->event_.type == sf::Event::KeyReleased) {
-        if(game_->event_.key.code == keybinds_["FOREGROUND"]) {
+    if (game_->event_.type == sf::Event::KeyPressed) {
+        if (game_->event_.key.code == keybinds_["BACK"]) {
+            game_->pushState(States::MENU);
+        }
+        if (game_->event_.key.code == keybinds_["SAVE"]) {
+            map_.saveMap();
+        }
+        if (game_->event_.key.code == keybinds_["FOREGROUND"]) {
             changeActiveLayer(++activeLayer_);
-        } else if(game_->event_.key.code == keybinds_["BACKGROUND"]) {
+        } else if (game_->event_.key.code == keybinds_["BACKGROUND"]) {
             changeActiveLayer(--activeLayer_);
-        } else if(game_->event_.key.code == keybinds_["DELETE_MODE"]) {
+        } else if (game_->event_.key.code == keybinds_["DELETE_MODE"]) {
             deleteMode_ = !deleteMode_;
         }
         updateText();
     }
-
-    if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-        if(deleteMode_) {
+    if (game_->event_.type == sf::Event::MouseButtonPressed &&
+        game_->event_.mouseButton.button == sf::Mouse::Left) {
+        if (deleteMode_) {
             removeTile();
         } else {
             placeTile();
         }
     }
 }
+
+
 
 void EditorState::update(const float dt) {
     State::update(dt);
@@ -100,7 +102,7 @@ void EditorState::placeTile() {
     auto [x, y] = getTileCordPosFromMousePos();
 
     TileData data(map_.getTilesTexture());
-    data.size = {64, 64};
+    data.size = {static_cast<float>(gridSize_), static_cast<float>(gridSize_)};
     data.layer = static_cast<MapLayer>(activeLayer_);
     data.position.x = x;
     data.position.y = y;
@@ -116,8 +118,8 @@ void EditorState::removeTile() {
 
 std::pair<int, int> EditorState::getTileCordPosFromMousePos() {
     auto mousePos = getMouseWindowPos();
-    int x = mousePos.x / 64 * 64;
-    int y = mousePos.y / 64 * 64;
+    int x = mousePos.x / gridSize_ * gridSize_;
+    int y = mousePos.y / gridSize_ * gridSize_;
 
     return {x, y};
 }

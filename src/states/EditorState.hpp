@@ -23,6 +23,8 @@ class EditorState : public State {
         TileMap map_;
         sf::View mapTilesView_;
 
+        int gridSize_ {64};
+
         int activeLayer_;
         std::string activeLayerString_;
         sf::Text activeLayerText_;
