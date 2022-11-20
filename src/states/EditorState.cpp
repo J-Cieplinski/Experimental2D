@@ -5,13 +5,16 @@
 
 EditorState::EditorState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
     : State(targetWindow, game, "configs/editorKeybinds.json"), activeLayer_(static_cast<int>(MapLayer::BACKGROUND)),
-    deleteMode_(false), map_(game_->getAssetsManager<TextureManager>())
+    deleteMode_(false), map_(game_->getAssetsManager<TextureManager>()), activeLayerString_("Active layer: "),
+    deleteModeString_("Delete mode: ")
 {
     map_.loadMap(targetWindow_->getSize().x, targetWindow_->getSize().y);
     tilesSelector_ = std::make_shared<gui::TileTextureSelector>(*this, map_.getTilesTexture(),0,0);
     guiElements_.push_back(tilesSelector_);
     addObserver(tilesSelector_.get());
     mapTilesView_.setSize(200,200);
+
+    initText();
 }
 
 void EditorState::updateFromInput(const float dt) {
@@ -22,15 +25,18 @@ void EditorState::updateFromInput(const float dt) {
     if(sf::Keyboard::isKeyPressed(keybinds_["SAVE"])) {
         map_.saveMap();
     }
-    if(sf::Keyboard::isKeyPressed(keybinds_["FOREGROUND"])) {
-       activeLayer_ = std::clamp(++activeLayer_, 0, static_cast<int>(MapLayer::MAX_LAYERS));
+
+    if(game_->event_.type == sf::Event::KeyReleased) {
+        if(game_->event_.key.code == keybinds_["FOREGROUND"]) {
+            changeActiveLayer(++activeLayer_);
+        } else if(game_->event_.key.code == keybinds_["BACKGROUND"]) {
+            changeActiveLayer(--activeLayer_);
+        } else if(game_->event_.key.code == keybinds_["DELETE_MODE"]) {
+            deleteMode_ = !deleteMode_;
+        }
+        updateText();
     }
-    if(sf::Keyboard::isKeyPressed(keybinds_["BACKGROUND"])) {
-        activeLayer_ = std::clamp(--activeLayer_, 0, static_cast<int>(MapLayer::MAX_LAYERS));
-    }
-    if(sf::Keyboard::isKeyPressed(keybinds_["DELETE_MODE"])) {
-        deleteMode_ = !deleteMode_;
-    }
+
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
         if(deleteMode_) {
             removeTile();
@@ -72,6 +78,9 @@ void EditorState::render(sf::RenderTarget* target) {
     for(auto& button : guiElements_) {
         button->render(*target);
     }
+
+    target->draw(activeLayerText_);
+    target->draw(deleteModeText_);
 }
 
 void EditorState::notifyObservers(Event event) {
@@ -112,4 +121,31 @@ std::pair<int, int> EditorState::getTileCordPosFromMousePos() {
     int y = mousePos.y / 64 * 64;
 
     return {x, y};
+}
+
+void EditorState::updateText() {
+    activeLayerText_.setString(activeLayerString_ + std::to_string(activeLayer_));
+    deleteModeText_.setString(deleteModeString_ + std::to_string(deleteMode_));
+}
+
+void EditorState::changeActiveLayer(int layer) {
+    activeLayer_ = std::clamp(layer, 0, static_cast<int>(MapLayer::MAX_LAYERS) - 1);
+}
+
+void EditorState::initText() {
+    auto& font = game_->getAssetsManager<FontsManager>().getAsset(Fonts::MAIN);
+    auto windowSize = targetWindow_->getSize();
+
+    activeLayerText_.setFont(font);
+    activeLayerText_.setCharacterSize(20);
+    activeLayerText_.setString(activeLayerString_ + std::to_string(activeLayer_));
+    activeLayerText_.setFillColor(sf::Color::Black);
+
+    activeLayerText_.setPosition(windowSize.x - (activeLayerText_.getGlobalBounds().width * 1.5), activeLayerText_.getGlobalBounds().height / 2);
+
+    deleteModeText_.setFont(font);
+    deleteModeText_.setCharacterSize(20);
+    deleteModeText_.setString(deleteModeString_ + std::to_string(deleteMode_));
+    deleteModeText_.setFillColor(sf::Color::Black);
+    deleteModeText_.setPosition(windowSize.x - (deleteModeText_.getGlobalBounds().width * 1.5), deleteModeText_.getGlobalBounds().height + activeLayerText_.getGlobalBounds().height);
 }

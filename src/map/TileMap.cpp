@@ -25,7 +25,7 @@ void TileMap::render(sf::RenderTarget& target) {
 void TileMap::defferedRender(sf::RenderTarget& target) {
     for(const auto& tilesY : tiles_) {
         for (const auto &tilesZ: tilesY) {
-            for (int i = static_cast<int>(MapLayer::ENTITY); i < tiles_[0][0].size(); ++i) {
+            for (int i = static_cast<int>(MapLayer::ENTITY) + 1; i < tiles_[0][0].size(); ++i) {
                 if(!tilesZ[i]) continue;
                 tilesZ[i]->render(target);
             }
@@ -92,7 +92,7 @@ void TileMap::addTile(const TileData& tile) {
     auto indexX = tile.position.x / gridSize_ - 1;
     auto indexY = tile.position.y / gridSize_ - 1;
     auto indexZ = static_cast<int>(tile.layer);
-    tiles_[indexX >= 0 ? indexX : 0][indexY >= 0 ? indexY : 0][indexZ > 0 ? --indexZ : 0] = ptr;
+    tiles_[indexX >= 0 ? indexX : 0][indexY >= 0 ? indexY : 0][indexZ] = ptr;
 }
 
 void TileMap::removeTile(Tile* tile) {
