@@ -19,19 +19,19 @@ class Game {
         void changeState(States stateId);
         void pushState(States stateId);
         void quitState(States stateId);
-        void pauseAllStates();
+        void pauseAllStates() const;
         const std::string& getTitle() const;
         template <typename Type>
         Type& getAssetsManager();
 
-        sf::Event event_;
+        sf::Event event_{};
     private:
         std::shared_ptr<sf::RenderWindow> window_;
         sf::Clock dtClock_;
-        float dt_;
+        float dt_{};
 
         std::map<States, std::unique_ptr<State>> states_;
-        State* currentState_;
+        State* currentState_{};
         TextureManager textureManager_;
         FontsManager fontsManager_;
 
@@ -40,7 +40,7 @@ class Game {
         void update();
         void updateEvents();
         void updateDt();
-        void render();
+        void render() const;
 
         void initStates();
         void initWindow();

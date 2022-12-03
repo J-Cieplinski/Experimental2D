@@ -1,11 +1,13 @@
-#include "Game.hpp"
+#include <fstream>
+#include <ranges>
 #include "../dependencies/nlohmann/json.hpp"
-#include "states/MainMenuState.hpp"
+
+#include "Game.hpp"
+#include "states/EditorState.hpp"
 #include "states/GameState.hpp"
+#include "states/MainMenuState.hpp"
 #include "states/PausedState.hpp"
 #include "states/SettingsMenuState.hpp"
-#include "states/EditorState.hpp"
-#include <fstream>
 
 using json = nlohmann::json;
 
@@ -20,7 +22,7 @@ void Game::initWindow() {
 
     auto config = json::parse(configFile);
     configFile.close();
-    auto windowConfig = config["window"];
+    auto& windowConfig = config["window"];
 
     title_ = windowConfig["title"];
     window_ = std::make_unique<sf::RenderWindow>(sf::VideoMode(windowConfig["width"], windowConfig["height"]), title_);
@@ -63,7 +65,7 @@ void Game::changeState(States stateId) {
     // cleanup the current state
 	if (!states_.empty()) {
         currentState_->cleanup();
-        auto it = std::find_if(states_.begin(), states_.end(), [&](const auto& el) {
+        auto it = std::ranges::find_if(states_, [&](const auto& el) {
             return el.second.get() == currentState_;
         });
         states_.erase(it);
@@ -88,16 +90,17 @@ void Game::quitState(States stateId) {
         return; //cannot quit current state or non existent one
     }
 
-    auto it = std::find_if(states_.begin(), states_.end(), [&](const auto& el) {
+    const auto it = std::ranges::find_if(states_, [&](const auto& el) {
         return el.second.get() == stateToQuit;
     });
     states_.erase(it);
     stateToQuit = nullptr;
 }
 
-void Game::pauseAllStates() {
-    for(auto& state : states_) {
-        state.second->pause();
+void Game::pauseAllStates() const
+{
+    for(const auto& state : states_ | std::views::values) {
+        state->pause();
     }
 }
 
@@ -130,7 +133,8 @@ void Game::updateDt() {
     dt_ = dtClock_.restart().asSeconds();
 }
 
-void Game::render() {
+void Game::render() const
+{
     window_->clear();
 
     if(currentState_) {

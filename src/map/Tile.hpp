@@ -3,7 +3,7 @@
 #include "../util.hpp"
 
 struct TileData {
-    TileData(sf::Texture& text) : texture(text) {};
+    TileData(sf::Texture& text) : texture(text) {}
     sf::Texture& texture;
     sf::Vector2f size;
     sf::Vector2f position;
@@ -19,10 +19,10 @@ class Tile {
 
     public:
         Tile(const TileData& tileData);
-        virtual ~Tile() {};
+        virtual ~Tile() = default;
         const sf::Vector2f& getPosition() const;
         const sf::IntRect & getIntRect() const;
-        const MapLayer getLayer() const;
+        MapLayer getLayer() const;
         friend bool operator<(const Tile& left, const Tile& right) {
             return left.layer_ < right.layer_;
         };

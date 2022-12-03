@@ -36,7 +36,8 @@ enum class MapLayer {
 enum class Textures {
     PLAYER,
     BACKGROUND,
-    MAP
+    MAP,
+    PLACEHOLDER
 };
 
 enum class Fonts {
@@ -44,7 +45,7 @@ enum class Fonts {
 };
 
 inline bool operator<(MapLayer left, MapLayer right) {
-    return static_cast<std::underlying_type<MapLayer>::type>(left) < static_cast<std::underlying_type<MapLayer>::type>(right);
+    return static_cast<std::underlying_type_t<MapLayer>>(left) < static_cast<std::underlying_type_t<MapLayer>>(right);
 };
 
 inline std::string operator<<(const std::string& left, Textures right) {
@@ -59,6 +60,9 @@ inline std::string operator<<(const std::string& left, Textures right) {
             break;
         case Textures::MAP:
             ss << "Textures::MAP";
+            break;
+        case Textures::PLACEHOLDER:
+            ss << "Textures::PLACEHOLDER";
             break;
     }
 

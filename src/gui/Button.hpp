@@ -25,6 +25,6 @@ namespace gui {
 
             bool isHovered_ = false;
 
-            bool isHovered(const sf::Vector2i& mousePos);
+            bool isHovered(const sf::Vector2i& mousePos) const;
     };
 }

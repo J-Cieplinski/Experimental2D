@@ -33,10 +33,10 @@ class EditorState : public State {
         std::string deleteModeString_;
         bool deleteMode_;
 
-        void notifyObservers(Event event);
+        void notifyObservers(Event event) const;
         void placeTile();
         void removeTile();
-        std::pair<int, int> getTileCordPosFromMousePos();
+        std::pair<int, int> getTileCordPosFromMousePos() const;
 
         void changeActiveLayer(int layer);
 

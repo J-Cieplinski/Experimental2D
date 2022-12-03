@@ -10,6 +10,7 @@ namespace gui {
             bool onNotify(Event event, const State& state) override;
             void render(sf::RenderTarget& target) override;
             void update(const sf::Vector2i& mousePos) override;
+            bool isInBounds(const sf::Vector2i& mousePos);
         private:
             sf::Texture& texture_;
             sf::Sprite tileSheet_;
@@ -18,7 +19,5 @@ namespace gui {
             const unsigned int gridSize_ {64};
             sf::Sprite pickedTexture_;
             sf::IntRect pickedTile_ {0,0,0,0};
-
-            bool isInBounds(const sf::Vector2i& mousePos);
     };
 }

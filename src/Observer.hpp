@@ -5,10 +5,10 @@
 
 class Observer {
     public:
-        Observer(State& state) : state_(state) {};
+        Observer(State& state) : state_(state) {}
         virtual ~Observer() {
             state_.removeObserver(this);
-        };
+        }
         Observer(const Observer& copyFrom) = default;
         Observer(Observer&& moveFrom) = default;
         virtual bool onNotify(Event event, const State& state) = 0;

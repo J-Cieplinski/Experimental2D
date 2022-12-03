@@ -4,10 +4,12 @@
 AnimationComponent::Animation::Animation(sf::Sprite& sprite,
                                         int frameWidth, int frameHeight, float animationTime,
                                         int framesX, int framesY, int startFrameX, int startFrameY)
-    : sprite_(sprite), frameHeight_(frameHeight), frameWidth_(frameWidth), animationTime_(animationTime),
+    : sprite_(sprite),
         firstFrame_{startFrameX * frameWidth, startFrameY * frameHeight, frameWidth, frameHeight},
-        lastFrame_{((framesX ? framesX : 1) - 1) * frameWidth, (framesY + startFrameY) * frameHeight, frameWidth, frameHeight},
-        currentFrame_{firstFrame_}
+        lastFrame_{((framesX ? framesX : 1) - 1) * frameWidth, (framesY + startFrameY) * frameHeight, frameWidth, frameHeight}, currentFrame_{firstFrame_},
+        animationTime_(animationTime),
+        frameWidth_(frameWidth),
+        frameHeight_(frameHeight)
 {
     sprite_.setTextureRect(currentFrame_);
 }
@@ -32,14 +34,12 @@ void AnimationComponent::Animation::reset() {
 }
 
 AnimationComponent::AnimationComponent(sf::Sprite& sprite, sf::Texture&& textureSheet)
-    : sprite_(sprite), textureSheet_(textureSheet)
-{
+    : sprite_(sprite), textureSheet_(textureSheet) {
 
 }
 
 AnimationComponent::AnimationComponent(sf::Sprite& sprite)
-    : sprite_(sprite)
-{
+    : sprite_(sprite) {
 
 }
 

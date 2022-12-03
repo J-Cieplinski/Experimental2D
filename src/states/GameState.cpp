@@ -26,7 +26,7 @@ void GameState::render(sf::RenderTarget* target) {
     target->clear(sf::Color::Red);
     map_.render(*target);
     player_.render(*target);
-    map_.defferedRender(*target);
+    map_.deferredRender(*target);
 }
 
 void GameState::cleanup() {
@@ -36,7 +36,7 @@ void GameState::cleanup() {
 void GameState::initPlayer() {
     auto& textureManager = game_->getAssetsManager<TextureManager>();
 
-    auto playerGraphics = new GraphicsComponent();
+    const auto playerGraphics = new GraphicsComponent();
     auto& animComponent = playerGraphics->getAnimationComponent();
     animComponent.addTextureSheet(textureManager.getAsset(Textures::PLAYER), {2, 2});
 

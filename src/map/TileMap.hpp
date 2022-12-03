@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <set>
 #include "SFML/Graphics.hpp"
 #include "../Game.hpp"
 #include "Tile.hpp"
@@ -21,10 +20,10 @@ class TileMap {
     public:
         TileMap(TextureManager& textureManager);
 
-        sf::Texture& getTilesTexture();
+        sf::Texture& getTilesTexture() const;
         void loadTexture(const char* filePath);
-        void render(sf::RenderTarget& target);
-        void defferedRender(sf::RenderTarget& target);
+        void render(sf::RenderTarget& target) const;
+        void deferredRender(sf::RenderTarget& target) const;
         void createMap(int x, int y, int z);
         void loadMap(int maxX = 0, int maxY = 0);
         void saveMap();

@@ -13,12 +13,12 @@ namespace gui {
         sf::Vector2f sizeVector {width, height};
         const auto mainButtonPos = buttonArea_.getPosition();
 
-        auto numberOfButtons = callbacks.size();
+        const auto numberOfButtons = callbacks.size();
         listItems_.reserve(numberOfButtons);
         auto counter = numberOfButtons / 2.f;
-        for(const auto& item : callbacks) {
+        for(const auto& [name, callback] : callbacks) {
             auto pos = mainButtonPos + sf::Vector2f{200, height * counter--};
-            auto& button = listItems_.emplace_back(state, sizeVector, pos, item.first, font, charSize, item.second);
+            auto& button = listItems_.emplace_back(state, sizeVector, pos, name, font, charSize, callback);
         }
     }
 
@@ -30,7 +30,8 @@ namespace gui {
         bool wasProcessed = false;
         if(isActive_) {
             for(auto& item : listItems_) {
-                if(wasProcessed = item.onNotify(event, state)) {
+                if(item.onNotify(event, state)) {
+                    wasProcessed = true;
                     isActive_ = false;
                     break;
                 }

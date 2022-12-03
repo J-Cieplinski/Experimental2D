@@ -11,7 +11,7 @@ class State {
     protected:
         Game* game_;
         std::shared_ptr<sf::RenderWindow> targetWindow_;
-        std::vector<sf::Texture> m_textures;
+        std::vector<sf::Texture> textures_;
         std::map<std::string, sf::Keyboard::Key> keybinds_;
         sf::Vector2i mouseWindowPos_;
         sf::Vector2i mouseScreenPos_;

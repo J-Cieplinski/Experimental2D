@@ -4,9 +4,9 @@
 
 
 EditorState::EditorState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
-    : State(targetWindow, game, "configs/editorKeybinds.json"), activeLayer_(static_cast<int>(MapLayer::BACKGROUND)),
-    deleteMode_(false), map_(game_->getAssetsManager<TextureManager>()), activeLayerString_("Active layer: "),
-    deleteModeString_("Delete mode: ")
+    : State(targetWindow, game, "configs/editorKeybinds.json"), map_(game_->getAssetsManager<TextureManager>()),
+    activeLayer_(static_cast<int>(MapLayer::BACKGROUND)), activeLayerString_("Active layer: "), deleteModeString_("Delete mode: "),
+    deleteMode_(false)
 {
     map_.loadMap(targetWindow_->getSize().x, targetWindow_->getSize().y);
     tilesSelector_ = std::make_shared<gui::TileTextureSelector>(*this, map_.getTilesTexture(),0,0);
@@ -38,10 +38,12 @@ void EditorState::updateFromInput(const float dt) {
     }
     if (game_->event_.type == sf::Event::MouseButtonPressed &&
         game_->event_.mouseButton.button == sf::Mouse::Left) {
-        if (deleteMode_) {
-            removeTile();
-        } else {
-            placeTile();
+        if(!tilesSelector_->isInBounds(mouseWindowPos_)) {
+            if (deleteMode_) {
+                removeTile();
+            } else {
+                placeTile();
+            }
         }
     }
 }
@@ -74,7 +76,7 @@ void EditorState::render(sf::RenderTarget* target) {
     target->clear(sf::Color::Red);
 
     map_.render(*target);
-    map_.defferedRender(*target);
+    map_.deferredRender(*target);
 
     for(auto& button : guiElements_) {
         button->render(*target);
@@ -84,7 +86,7 @@ void EditorState::render(sf::RenderTarget* target) {
     target->draw(deleteModeText_);
 }
 
-void EditorState::notifyObservers(Event event) {
+void EditorState::notifyObservers(Event event) const {
     for(const auto& observer : observers_) {
         observer->onNotify(event, *this);
         if(quitState_) {
@@ -94,7 +96,7 @@ void EditorState::notifyObservers(Event event) {
 }
 
 void EditorState::placeTile() {
-    auto pickedTile = tilesSelector_->getPickedTile();
+    auto& pickedTile = tilesSelector_->getPickedTile();
     if(pickedTile == sf::IntRect(0, 0, 0, 0)) {
         return;
     }
@@ -116,8 +118,9 @@ void EditorState::removeTile() {
     map_.removeTile(map_.getTileAtPos(x, y, activeLayer_));
 }
 
-std::pair<int, int> EditorState::getTileCordPosFromMousePos() {
-    auto mousePos = getMouseWindowPos();
+std::pair<int, int> EditorState::getTileCordPosFromMousePos() const
+{
+    auto& mousePos = getMouseWindowPos();
     int x = mousePos.x / gridSize_ * gridSize_;
     int y = mousePos.y / gridSize_ * gridSize_;
 
@@ -134,8 +137,8 @@ void EditorState::changeActiveLayer(int layer) {
 }
 
 void EditorState::initText() {
-    auto& font = game_->getAssetsManager<FontsManager>().getAsset(Fonts::MAIN);
-    auto windowSize = targetWindow_->getSize();
+    const auto& font = game_->getAssetsManager<FontsManager>().getAsset(Fonts::MAIN);
+    const auto windowSize = targetWindow_->getSize();
 
     activeLayerText_.setFont(font);
     activeLayerText_.setCharacterSize(20);

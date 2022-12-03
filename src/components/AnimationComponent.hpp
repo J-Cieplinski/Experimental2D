@@ -1,8 +1,9 @@
 #pragma once
-#include <map>
-#include <string>
+
 #include "SFML/Graphics.hpp"
 #include "../util.hpp"
+
+#include <map>
 
 class Entity;
 class AnimationComponent {

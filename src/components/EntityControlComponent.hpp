@@ -5,7 +5,7 @@ class Entity;
 class EntityControlComponent {
     public:
         virtual void update(Entity& target);
-        EntityState getState();
+        EntityState getState() const;
     protected:
-        EntityState state_;
+        EntityState state_ {EntityState::IDLE};
 };

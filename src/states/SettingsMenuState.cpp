@@ -35,7 +35,7 @@ SettingsMenuState::SettingsMenuState(std::shared_ptr<sf::RenderWindow> targetWin
 
             try {
                 charSize = button.at("charSize");
-            } catch(const json::out_of_range& e) {
+            } catch(const json::out_of_range&) {
                 charSize = settings["charSize"];
             }
 
@@ -47,7 +47,6 @@ SettingsMenuState::SettingsMenuState(std::shared_ptr<sf::RenderWindow> targetWin
 
             std::map<std::string, std::function<void()>> funcs;
 
-            const auto title = game->getTitle();
             for(auto& option : listItem["options"]) {
                 int width = option["width"];
                 int height = option["height"];

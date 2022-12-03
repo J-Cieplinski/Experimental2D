@@ -16,7 +16,8 @@ void State::initKeybinds(const char* configFile) {
     }
 }
 
-State::State(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game, const char* keybindsConfig) : targetWindow_(targetWindow), game_(game) {
+State::State(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game, const char* keybindsConfig) :
+    game_(game), targetWindow_(targetWindow) {
     initKeybinds(keybindsConfig);
 }
 

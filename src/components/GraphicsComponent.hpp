@@ -7,7 +7,7 @@ class GraphicsComponent {
     public:
         GraphicsComponent();
 
-        void render(sf::RenderTarget& target);
+        void render(sf::RenderTarget& target) const;
         void update(const Entity& entity);
         AnimationComponent& getAnimationComponent();
     private:

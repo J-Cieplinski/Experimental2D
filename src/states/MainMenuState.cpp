@@ -45,7 +45,7 @@ void MainMenuState::initButtons() {
 
         try {
             charSize = button.at("charSize");
-        } catch(const json::out_of_range& e) {
+        } catch(const json::out_of_range&) {
             charSize = mainMenu["charSize"];
         }
 
@@ -59,7 +59,7 @@ void MainMenuState::initButtons() {
 
 MainMenuState::MainMenuState(std::shared_ptr<sf::RenderWindow> targetWindow, Game* game)
     : State(targetWindow, game) {
-        auto& backgroundImage = game->getAssetsManager<TextureManager>().getAsset(Textures::BACKGROUND);
+        const auto& backgroundImage = game->getAssetsManager<TextureManager>().getAsset(Textures::BACKGROUND);
         background_.setSize(sf::Vector2f(targetWindow->getSize()));
         background_.setTexture(&backgroundImage);
 

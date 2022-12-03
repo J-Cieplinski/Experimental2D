@@ -5,7 +5,7 @@ GraphicsComponent::GraphicsComponent() : animationComponent_(sprite_) {
     //sprite_.setScale(2,2);
     //sprite_.setColor(sf::Color::Black);
 }
-void GraphicsComponent::render(sf::RenderTarget& target) {
+void GraphicsComponent::render(sf::RenderTarget& target) const {
     target.draw(sprite_);
 }
 
