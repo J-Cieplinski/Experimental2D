@@ -17,4 +17,4 @@ set(sources
         )
 
 add_library(Entities STATIC ${sources})
-target_link_libraries(Entities sfml-graphics)
+target_link_libraries(Entities Components sfml-graphics)
